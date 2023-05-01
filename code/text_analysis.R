@@ -36,3 +36,39 @@ tidy_storytext3 = tidy_storytext2 %>%
 
 tidy_storytext4 = tidy_storytext3 %>%
   mutate_at("word", funs(wordStem((.), language="en")))
+
+
+# Sentiment Analysis 
+# Evaluating joy and sadness
+nrc_joysad = get_sentiments('nrc') %>%
+  filter(sentiment == 'joy' | 
+           sentiment == 'sadness')
+
+newjoin = inner_join(tidy_storytext4, nrc_joysad)
+
+write.csv(newjoin, paste(getwd(),"/data/text_analysis_data/joy_sadness_raw_data.csv",sep = ""))
+
+# Evaluating trust and fear
+nrc_trstfear = get_sentiments('nrc') %>%
+  filter(sentiment == 'trust' |
+           sentiment == 'fear')
+
+newjoin2 = inner_join(tidy_storytext4, nrc_trstfear)
+write.csv(newjoin2, paste(getwd(),"/data/text_analysis_data/trust_fear_raw_data.csv",sep = ""))
+
+# Evaluating positive and negative
+nrc_posneg = get_sentiments('nrc') %>%
+  filter(sentiment == 'positive' |
+           sentiment == 'negative')
+
+newjoin3 = inner_join(tidy_storytext4, nrc_posneg)
+write.csv(newjoin3, paste(getwd(),"/data/text_analysis_data/pos_neg_raw_data.csv",sep = ""))
+
+# 
+counts = count(newjoin, word, sentiment)
+spread2 = spread(counts, sentiment, n, fill = 0)
+spread2
+
+content_data = mutate(spread2, contentment = joy - sadness, linenumber = row_number())
+storytext_joysad = arrange(content_data, desc(contentment))
+storytext_joysad
