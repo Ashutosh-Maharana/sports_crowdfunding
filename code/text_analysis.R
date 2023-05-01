@@ -13,9 +13,9 @@ raw_data <- read.csv(paste(getwd(),"/data/clean_data/final_dataset_textanalysis.
 raw_data <- raw_data[raw_data['language'] == "en",]
 
 # Selecting the story texts
-story_texts_data = select(raw_data, Story, CampaignURL)
+story_texts_data = select(raw_data, Story_Original, CampaignURL)
 
-tidy_storytext = unnest_tokens(story_texts_data, word, Story)
+tidy_storytext = unnest_tokens(story_texts_data, word, Story_Original)
 
 # Stop word removal
 
