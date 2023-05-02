@@ -108,11 +108,13 @@ main_df.to_csv("{}/data/clean_data/final_dataset_analysis.csv".format(cwd))
 # %%
 main_df.columns
 
+# sentiment Analysis - Joy and Sadness, Positive and Negative, and Fear and Trust Grouping to main csv file
+
 #%%
 import pandas as pd
 import os
 #%%
-# read the CSV file
+# read the joy_sadness_raw_data csv file
 df = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/text_analysis_data/joy_sadness_raw_data.csv')
 #%%
 sentiment_df = df.pivot_table(index=['CampaignURL'], columns=['sentiment'], aggfunc='size', fill_value=0)
@@ -128,7 +130,7 @@ main_df.to_csv("E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_da
 #%%
 import pandas as pd
 #%%
-# read the CSV file
+# read the pos_neg_raw_data.csv file
 df = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/text_analysis_data/pos_neg_raw_data.csv')
 #%%
 sentiment_df = df.pivot_table(index=['CampaignURL'], columns=['sentiment2'], aggfunc='size', fill_value=0)
