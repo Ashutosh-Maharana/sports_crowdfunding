@@ -691,6 +691,14 @@ main_data_df.head()
 
 ## Text Mining and Sentiment Analysis
 
+<p align="center">
+    <img width="800" src="/assets/Visualizations/text_analysis/Top_Joy.png">
+</p>
+
+<p align="center">
+    <img width="800" src="/assets/Visualizations/text_analysis/Top_Sadness.png">
+</p>
+
 ## Data Splitting and Sub-Sampling 
 
 ## Select Modeling Techniques
