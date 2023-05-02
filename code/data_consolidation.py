@@ -107,4 +107,55 @@ main_df.to_csv("{}/data/clean_data/final_dataset_analysis.csv".format(cwd))
 
 # %%
 main_df.columns
+
+#%%
+import pandas as pd
+import os
+#%%
+# read the CSV file
+df = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/text_analysis_data/joy_sadness_raw_data.csv')
+#%%
+sentiment_df = df.pivot_table(index=['CampaignURL'], columns=['sentiment'], aggfunc='size', fill_value=0)
+#%%
+main_df = pd.read_csv("E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis.csv")
+main_df.head()
+#%%
+main_df = main_df.merge(sentiment_df, on='CampaignURL', how='left')
+main_df
+#%%
+main_df.to_csv("E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score.csv", index=False)
+
+#%%
+import pandas as pd
+#%%
+# read the CSV file
+df = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/text_analysis_data/pos_neg_raw_data.csv')
+#%%
+sentiment_df = df.pivot_table(index=['CampaignURL'], columns=['sentiment2'], aggfunc='size', fill_value=0)
+#%%
+#main_df = pd.read_csv("E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis.csv")
+#main_df.head()
+#%%
+main_df = main_df.merge(sentiment_df, on='CampaignURL', how='left')
+main_df
+#%%
+main_df.to_csv("E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score.csv", index=False)
+
+# %%
+#%%
+import pandas as pd
+#%%
+# read the CSV file trust_fear_raw_data.csv
+df = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/text_analysis_data/trust_fear_raw_data.csv')
+#%%
+sentiment_df = df.pivot_table(index=['CampaignURL'], columns=['sentiment3'], aggfunc='size', fill_value=0)
+#%%
+#main_df = pd.read_csv("E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis.csv")
+#main_df.head()
+#%%
+main_df = main_df.merge(sentiment_df, on='CampaignURL', how='left')
+main_df
+#%%
+main_df.to_csv("E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score.csv", index=False)
+
 # %%
