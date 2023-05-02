@@ -20,6 +20,14 @@ import pyLDAvis.gensim  # don't skip this
 import matplotlib.pyplot as plt
 %matplotlib inline
 
+wd = os.getcwd()
+try:  
+    wd = wd.replace("/code", "")
+except:
+    pass
+
+os.chdir(wd)
+
 #%%
 def sent_to_words(sentences):
     for sentence in sentences:
@@ -47,4 +55,8 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV', 'NUM', '
     return texts_out
 
 #%%
-# Loading Data Frame 
+# Loading Data Frame from clean data folder
+
+df = pd.read_csv("{}/data/clean_data/final_dataset_textanalysis.csv".format(os.getcwd()))
+df.head()
+# %%
