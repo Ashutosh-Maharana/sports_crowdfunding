@@ -689,6 +689,15 @@ main_data_df.head()
 
 * NarcissismFactor shows that the average of the value is 9.65 with a standard deviation of 10.1. The median is 8.06 and the maximum value is 77.614. The variable has to be normalized with respect to the number of words in the story of the campaign. In our modeling, we will use the normalized variable for our analysis
 
+## Text Mining and Sentiment Analysis
+
+## Data Splitting and Sub-Sampling 
+
+## Select Modeling Techniques
+
+## Build the Models
+
+## Assess the Models
 
 ## Conclusion and Discussion
 
