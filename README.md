@@ -691,8 +691,6 @@ main_data_df.head()
 
 ## Text Mining and Sentiment Analysis
 
-Sentiment Analysis:
-
 Firstly, using the “final_dataset_analysis.csv” file, which was obtained from our previous deliverable, we have used the following function to identify the language of the text in the Story_Original column. 
 After applying the function, we created a new binary variable named is_english and set it with a value of 1 for English and 0 for other languages.
 
@@ -714,6 +712,12 @@ After we arrived at our dataset consisting of words tagged to each sentiment, we
 Here are top words and the word cloud of words that are associated with our sentiment pairs:
 
 1)	Joy – Sadness
+<p align="left">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Joy.png">
+</p>
+<p align="right">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Sadness.png">
+</p>
 2)	Positive Negative
 3)	Trust - Fear
 
