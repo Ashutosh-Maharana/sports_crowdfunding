@@ -696,7 +696,19 @@ Sentiment Analysis:
 Firstly, using the “final_dataset_analysis.csv” file, which was obtained from our previous deliverable, we have used the following function to identify the language of the text in the Story_Original column. 
 After applying the function, we created a new binary variable named is_english and set it with a value of 1 for English and 0 for other languages.
 
-Dataset , dictionary merge process and developing new datasets and merging with original file  this summary
+	## Detect Language function
+    def detect_language(text):
+    try:
+        lang = detect(text)
+    except:
+        lang = 'unknown'
+    return lang
+
+    ## apply the detect_language function to the ‘Story_Original’' column
+    df['language'] = df['Story_Original'].apply(detect_language)
+
+
+Dataset , dictionary merge process and developing new datasets and merging with original file -- Need to add this
 
 After we arrived at our dataset consisting of words tagged to each sentiment, we looked at the most frequently used words corresponding to each of those sentiments. 
 Here are top words and the word cloud of words that are associated with our sentiment pairs:
