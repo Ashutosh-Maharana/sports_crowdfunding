@@ -712,10 +712,10 @@ After we arrived at our dataset consisting of words tagged to each sentiment, we
 Here are top words and the word cloud of words that are associated with our sentiment pairs:
 
 1)	Joy – Sadness
-<p align="left">
+<p align="center">
     <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Joy.png">
 </p>
-<p align="right">
+<p align="center">
     <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Sadness.png">
 </p>
 2)	Positive Negative
@@ -723,7 +723,9 @@ Here are top words and the word cloud of words that are associated with our sent
 
 In addition to identifying the top words associated to a sentiment, we also looked at individual stories that have a high score for a particular sentiment to understand how the words align with what people actually say.
 	
-	Picture of the excel file
+<p align="center">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/Sentiment_Text.png">
+</p>
 
 As shown in the image above, we can see how the story tagged with a high sentiment score for Joy has words like Passion, Love and Success, while a story tagged with a high sentiment score for Fear has words like difficult, journey and fight being used.
 
@@ -731,7 +733,12 @@ Using the sentiment scores that were assigned to every campaign as showed in “
 To determine the overall sentiment, sentiment scores for specific sentiment pairs were compared, and the story was assigned the sentiment with the highest score. 
 Following bar charts show the percentage of sentiment scores for different sports and countries, with the sports that have a 100% sentiment value for one sentiment excluded.
 	
-	Barchart images
+<p align="center">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/JoyPerc.png">
+</p>
+<p align="center">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/JoyPercCountry.png">
+</p>
 
 
 ## Data Splitting and Sub-Sampling 
