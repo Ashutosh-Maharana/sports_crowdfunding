@@ -711,15 +711,16 @@ Dataset , dictionary merge process and developing new datasets and merging with 
 After we arrived at our dataset consisting of words tagged to each sentiment, we looked at the most frequently used words corresponding to each of those sentiments. 
 Here are top words and the word cloud of words that are associated with our sentiment pairs:
 
-1)	Joy – Sadness
+Joy – Sadness Sentiment
 <p align="center">
     <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Joy.png">
 </p>
 <p align="center">
     <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Sadness.png">
 </p>
-2)	Positive Negative
-3)	Trust - Fear
+
+Positive Negative Sentiment
+Trust - Fear Sentiment
 
 In addition to identifying the top words associated to a sentiment, we also looked at individual stories that have a high score for a particular sentiment to understand how the words align with what people actually say.
 	
