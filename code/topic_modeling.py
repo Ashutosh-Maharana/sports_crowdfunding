@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 # NLTK stopwords
 from nltk.corpus import stopwords
 stop_words = stopwords.words('english')
-%matplotlib inline
+# %matplotlib inline
 
 wd = os.getcwd()
 try:  
@@ -78,35 +78,85 @@ bigram_mod = gensim.models.phrases.Phraser(bigram)
 data_words_nostops = remove_stopwords(data_words)
 # Form Bigrams
 data_words_bigrams = make_bigrams(data_words_nostops)
+
+#%%
 # Do lemmatization keeping only noun, adj, vb, adv
-data_lemmatized = lemmatization(data_words_bigrams, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV', 'NUM', 'PRON'])
-id2word = corpora.Dictionary(data_lemmatized)
+data_lemmatized = lemmatization(data_words_bigrams, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
+dictionary = corpora.Dictionary(data_lemmatized)
+dictionary.filter_extremes(no_below=10, no_above=0.2)
+
 # Create Corpus
 texts = data_lemmatized
 # # Term Document Frequency
-corpus = [id2word.doc2bow(text) for text in texts]
+corpus = [dictionary.doc2bow(text) for text in texts]
+
 
 #%%
+# Testing the topic model for different number of topics
+# To identify the optimal number of topics
+# Using Perplexity and 'u_mass' Coherence score
+topic_num_list = range(5,21)
+perplexity_scores = []
+coherence_scores_umass = []
+
+# Make a index to word dictionary.
+temp = dictionary[0]  # only to "load" the dictionary.
+id2word = dictionary.id2token
+
+for topic_num in topic_num_list:
+    # Build LDA model
+    lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
+                                            id2word=id2word,
+                                            num_topics=topic_num, 
+                                            random_state=123,
+                                        #    update_every=1,
+                                        #    chunksize=100,
+                                            passes=5,
+                                            alpha='auto',
+                                            # per_word_topics=True
+                                            )    
+
+    # Compute Perplexity
+    # print('\n{}'.format(category))
+    perplexity_scores.append(lda_model.log_perplexity(corpus))
+    # print('\nPerplexity: ', lda_model.log_perplexity(corpus))  # a measure of how good the model is. lower the better.
+
+    # Compute Coherence Score u_mass
+    coherence_model_lda = CoherenceModel(model=lda_model, corpus=corpus, coherence='u_mass')
+    coherence_lda = coherence_model_lda.get_coherence()
+    coherence_scores_umass.append(coherence_lda)
+    print('\n u_mass Coherence Score: ', coherence_lda)
+
+
+#%%
+plt.plot(topic_num_list, coherence_scores_umass, 'o--')
+plt.xticks(topic_num_list)
+plt.title('\'u_mass\' Coherence Score plotted against number of topics')
+#%%
+# Make a index to word dictionary.
+temp = dictionary[0]  # only to "load" the dictionary.
+id2word = dictionary.id2token
+
 # Build LDA model
 lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
                                         id2word=id2word,
-                                        num_topics=10, 
-                                    #    random_state=100,
+                                        num_topics=17, 
+                                       random_state=123,
                                     #    update_every=1,
                                     #    chunksize=100,
                                         passes=5,
                                         alpha='auto',
                                         per_word_topics=True)
 
-#%%
+# Print the Keyword in the 17 topics
 print(lda_model.print_topics())
 
 #%%
 pyLDAvis.enable_notebook()
-vis = pyLDAvis.gensim.prepare(lda_model, corpus, id2word)
+vis = pyLDAvis.gensim.prepare(lda_model, corpus, dictionary)
 vis
 #%%
-vis.save_html("{}/data/topic_modeling/lda_10.json".format(wd))
+vis.save_html("{}/data/topic_modeling/lda_17.json".format(wd))
 # %%
 vis
 # %%
