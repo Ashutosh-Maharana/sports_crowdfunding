@@ -833,7 +833,14 @@ Checking the Distribution of Trust and Fear
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Dist_Trust_Fear.png">
 </p>
 
-Classification Model
+**Handling Class Imbalance**
+
+SMOTE (Synthetic Minority Over-sampling Technique) is a technique used to handle class imbalance in machine learning. It creates synthetic samples of the minority class by selecting some of the minority class observations and creating new observations that are linear combinations of the original minority observations.
+
+By using SMOTE, synthetic samples were generated for the minority class ('fear','negative','sad'), resulting in a balanced dataset that can be used to train the sentiment analysis model.
+
+**Classification Model**
+
 ```Python
 # Extract the input features and labels
 features = data['StoryCleaned']
