@@ -190,6 +190,13 @@ plt.title('Counts of trust_fear in trust_fear Column')
 
 # display the plot
 plt.show()
+
+
+
+#### Sentimnet Classification
+
+
+# Joy and Sadness
 # %%
 # Import required libraries
 import pandas as pd
@@ -197,9 +204,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
-
+from imblearn.over_sampling import SMOTE
 # Load the data
-data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score1.csv')
+data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv')
 #%%
 # Extract the input features and labels
 features = data['StoryCleaned']
@@ -211,6 +218,10 @@ stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'wh
 vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
 processed_features = vectorizer.fit_transform(features).toarray()
 #%%
+# Handle class imbalance using SMOTE
+smote = SMOTE(random_state=0)
+processed_features, labels = smote.fit_resample(processed_features, labels)
+#%%
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
 #%%
@@ -235,6 +246,76 @@ print(accuracy_score(y_test, predictions))
 # %%
 from sklearn.metrics import plot_confusion_matrix
 plot_confusion_matrix(text_classifier, X_test, y_test)
+
+
+#Trust and Fear
+
+
+#%%
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+from imblearn.over_sampling import SMOTE
+#%%
+# Load the data
+data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv')
+#%%
+# Extract the input features and labels
+features = data['StoryCleaned']
+labels = data['trust_fear']
+#%%
+# Vectorize the input features
+vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8)
+processed_features = vectorizer.fit_transform(features).toarray()
+#%%
+# Handle class imbalance using SMOTE
+smote = SMOTE(random_state=0)
+processed_features, labels = smote.fit_resample(processed_features, labels)
+#%%
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
+#%%
+# Train a Random Forest Classifier on the training data
+text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
+text_classifier.fit(X_train, y_train)
+#%%
+# Make predictions on the test data
+predictions = text_classifier.predict(X_test)
+#%%
+# Evaluate the performance of the model using a confusion matrix
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+
+
+# %%
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, accuracy_score
+print(classification_report(y_test,predictions))
+# %%
+print(accuracy_score(y_test, predictions))
+#%%
+true_fear = 0
+true_trust = 0
+for i in range(len(predictions)):
+    if predictions[i] == y_test.values[i]:
+        if predictions[i] == 'fear':
+            true_fear += 1
+        else:
+            true_trust += 1
+
+print("Number of correctly identified instances for fear: ", true_fear)
+print("Number of correctly identified instances for trust: ", true_trust)
+
+
+
+
+# Positive and Negative
+
+
+
 # %%
 # Import required libraries
 import pandas as pd
@@ -244,7 +325,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 
 # Load the data
-data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score1.csv')
+data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv')
 #%%
 # Extract the input features and labels
 features = data['StoryCleaned']
@@ -256,51 +337,9 @@ stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'wh
 vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
 processed_features = vectorizer.fit_transform(features).toarray()
 #%%
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
-#%%
-# Train a Random Forest Classifier on the training data
-text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
-text_classifier.fit(X_train, y_train)
-#%%
-# Make predictions on the test data
-predictions = text_classifier.predict(X_test)
-#%%
-# Evaluate the performance of the model using a confusion matrix
-cm = confusion_matrix(y_test, predictions)
-print(cm)
-
-# %%
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, accuracy_score
-print(classification_report(y_test,predictions))
-# %%
-print(accuracy_score(y_test, predictions))
-# %%
-from sklearn.metrics import plot_confusion_matrix
-plot_confusion_matrix(text_classifier, X_test, y_test)
-# %%
-# %%
-# Import required libraries
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
-
-# Load the data
-data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score1.csv')
-#%%
-# Extract the input features and labels
-features = data['StoryCleaned']
-labels = data['trust_fear']
-#%%
-# Define the stop words
-stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'which', 'this', 'that', 'these', 'those', 'then', 'just', 'so', 'than', 'such', 'both', 'through', 'about', 'for', 'is', 'of', 'while', 'during', 'to', 'What', 'Which', 'Is', 'If', 'While', 'This']
-# Vectorize the input features
-vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
-processed_features = vectorizer.fit_transform(features).toarray()
+# Handle class imbalance using SMOTE
+smote = SMOTE(random_state=0)
+processed_features, labels = smote.fit_resample(processed_features, labels)
 #%%
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
