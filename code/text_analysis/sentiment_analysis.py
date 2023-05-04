@@ -11,14 +11,21 @@ except:
     pass
 os.chdir(wd)
 
-df = pd.read_csv("{}/data/clean_data/final_dataset_textanalysis_sentiment_score.csv".format(os.getcwd()))
+df = pd.read_csv("E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score.csv".format(os.getcwd()))
 df = df[df['is_english'] == 1]
 
 #%%
 df['joy_sad'] = df.apply(lambda x: 'joy' if x['joy'] > x['sadness'] else 'sadness', axis=1)
 df['pos_neg'] = df.apply(lambda x: 'positive' if x['positive'] > x['negative'] else 'negative', axis=1)
 df['trust_fear'] = df.apply(lambda x: 'trust' if x['trust'] > x['fear'] else 'fear', axis=1)
-
+#%%
+df['joy_sad']
+#%%
+df['pos_neg']
+#%%
+df['trust_fear']
+#%%
+df.to_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score1.csv', index=False)
 # %%
 ##joy_sad_percentage values per SportName
 # Create a pivot table to calculate the percentage of joy_sad values per SportName
@@ -134,4 +141,189 @@ plt.tight_layout()
 plt.show()
 
 
+# %%
+import matplotlib.pyplot as plt
+
+# count the occurrences of each category in the 'joy_sad' column
+counts = df['joy_sad'].value_counts()
+
+# create a bar plot of the counts
+plt.bar(counts.index, counts.values)
+
+# add axis labels and a title
+plt.xlabel('Emotion')
+plt.ylabel('Count')
+plt.title('Counts of Joy and Sadness in Joy-Sadness Column')
+
+# display the plot
+plt.show()
+
+# %%
+import matplotlib.pyplot as plt
+
+# count the occurrences of each category in the 'pos_neg' column
+counts = df['pos_neg'].value_counts()
+
+# create a bar plot of the counts
+plt.bar(counts.index, counts.values)
+
+# add axis labels and a title
+plt.xlabel('Emotion')
+plt.ylabel('Count')
+plt.title('Counts of pos_neg in pos_neg Column')
+
+# display the plot
+plt.show()
+# %%
+import matplotlib.pyplot as plt
+
+# count the occurrences of each category in the 'trust_fear' column
+counts = df['trust_fear'].value_counts()
+
+# create a bar plot of the counts
+plt.bar(counts.index, counts.values)
+
+# add axis labels and a title
+plt.xlabel('Emotion')
+plt.ylabel('Count')
+plt.title('Counts of trust_fear in trust_fear Column')
+
+# display the plot
+plt.show()
+# %%
+# Import required libraries
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+
+# Load the data
+data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score1.csv')
+#%%
+# Extract the input features and labels
+features = data['StoryCleaned']
+labels = data['joy_sad']
+#%%
+# Define the stop words
+stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'which', 'this', 'that', 'these', 'those', 'then', 'just', 'so', 'than', 'such', 'both', 'through', 'about', 'for', 'is', 'of', 'while', 'during', 'to', 'What', 'Which', 'Is', 'If', 'While', 'This']
+# Vectorize the input features
+vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
+processed_features = vectorizer.fit_transform(features).toarray()
+#%%
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
+#%%
+# Train a Random Forest Classifier on the training data
+text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
+text_classifier.fit(X_train, y_train)
+#%%
+# Make predictions on the test data
+predictions = text_classifier.predict(X_test)
+#%%
+# Evaluate the performance of the model using a confusion matrix
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+
+# %%
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, accuracy_score
+print(classification_report(y_test,predictions))
+# %%
+print(accuracy_score(y_test, predictions))
+# %%
+from sklearn.metrics import plot_confusion_matrix
+plot_confusion_matrix(text_classifier, X_test, y_test)
+# %%
+# Import required libraries
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+
+# Load the data
+data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score1.csv')
+#%%
+# Extract the input features and labels
+features = data['StoryCleaned']
+labels = data['pos_neg']
+#%%
+# Define the stop words
+stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'which', 'this', 'that', 'these', 'those', 'then', 'just', 'so', 'than', 'such', 'both', 'through', 'about', 'for', 'is', 'of', 'while', 'during', 'to', 'What', 'Which', 'Is', 'If', 'While', 'This']
+# Vectorize the input features
+vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
+processed_features = vectorizer.fit_transform(features).toarray()
+#%%
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
+#%%
+# Train a Random Forest Classifier on the training data
+text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
+text_classifier.fit(X_train, y_train)
+#%%
+# Make predictions on the test data
+predictions = text_classifier.predict(X_test)
+#%%
+# Evaluate the performance of the model using a confusion matrix
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+
+# %%
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, accuracy_score
+print(classification_report(y_test,predictions))
+# %%
+print(accuracy_score(y_test, predictions))
+# %%
+from sklearn.metrics import plot_confusion_matrix
+plot_confusion_matrix(text_classifier, X_test, y_test)
+# %%
+# %%
+# Import required libraries
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+
+# Load the data
+data = pd.read_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score1.csv')
+#%%
+# Extract the input features and labels
+features = data['StoryCleaned']
+labels = data['trust_fear']
+#%%
+# Define the stop words
+stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'which', 'this', 'that', 'these', 'those', 'then', 'just', 'so', 'than', 'such', 'both', 'through', 'about', 'for', 'is', 'of', 'while', 'during', 'to', 'What', 'Which', 'Is', 'If', 'While', 'This']
+# Vectorize the input features
+vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
+processed_features = vectorizer.fit_transform(features).toarray()
+#%%
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
+#%%
+# Train a Random Forest Classifier on the training data
+text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
+text_classifier.fit(X_train, y_train)
+#%%
+# Make predictions on the test data
+predictions = text_classifier.predict(X_test)
+#%%
+# Evaluate the performance of the model using a confusion matrix
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+
+# %%
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, accuracy_score
+print(classification_report(y_test,predictions))
+# %%
+print(accuracy_score(y_test, predictions))
+# %%
+from sklearn.metrics import plot_confusion_matrix
+plot_confusion_matrix(text_classifier, X_test, y_test)
 # %%
