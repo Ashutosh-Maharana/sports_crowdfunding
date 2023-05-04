@@ -73,3 +73,6 @@ di <- describe(analysis_df2_test)
 
 sd(analysis_df2_test$numSupporters)
 
+
+write.csv(analysis_df2_train, paste(getwd(),"/data/data_analysis/final_data_train.csv",sep=""))
+write.csv(analysis_df2_test, paste(getwd(),"/data/data_analysis/final_data_test.csv",sep=""))
