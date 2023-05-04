@@ -833,6 +833,74 @@ Checking the Distribution of Trust and Fear
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Dist_Trust_Fear.png">
 </p>
 
+
+## Named Entity Recognition  
+Entities were extracted from the English language sports stories using the spaCy library. The stories were filtered for English language and named entity recognition was performed using “spaCy”. The entities were classified into ten categories - PERSON, ORG, PRODUCT, EVENT, MONEY, DATE, TIME, LOC, and NORP. Some of the story descriptions from which which named entiriesw ere extracted are as below:  
+<p align="center">
+    <img width="1200" src="assets/Visualizations/named_entity_recognition/sample2.png">
+</p>
+
+<p align="center">
+    <img width="1200" src="assets/Visualizations/named_entity_recognition/sample3.png">
+</p>  
+
+For each story, the identified entities were stored in separate columns in the dataframe. The dataframe was filtered to include only relevant columns such as CampaignURL, SportName, City, State, Country, TeamOrAthlete, language, and the columns for each entity type.
+
+```Python
+	for i, story in english_df['Story_Original'].iteritems():
+    doc = nlp(story)
+    for ent in doc.ents:
+        if ent.label_ in ['PERSON']:
+            english_df.at[i, 'PERSON_Entity'] += f"{ent.text} ({ent.label_}), "
+        elif ent.label_ in ['ORG']:
+            english_df.at[i, 'ORG_Entity'] += f"{ent.text} ({ent.label_}), "
+        elif ent.label_ in ['PRODUCT']:
+            english_df.at[i, 'PRODUCT_Entity'] += f"{ent.text} ({ent.label_}), "
+        elif ent.label_ in ['EVENT']:
+            english_df.at[i, 'EVENT_Entity'] += f"{ent.text} ({ent.label_}), "
+        elif ent.label_ in ['MONEY']:
+            english_df.at[i, 'MONEY_Entity'] += f"{ent.text} ({ent.label_}), "
+        elif ent.label_ in ['DATE']:
+            english_df.at[i, 'DATE_Entity'] += f"{ent.text} ({ent.label_}), "
+        elif ent.label_ in ['TIME']:
+            english_df.at[i, 'TIME_Entity'] += f"{ent.text} ({ent.label_}), "
+        elif ent.label_ in ['GPE', 'LOC','FAC']:
+            english_df.at[i, 'LOC_Entity'] += f"{ent.text} ({ent.label_}), "
+        elif ent.label_ in ['NORP']:
+            english_df.at[i, 'NORP_Entity'] += f"{ent.text} ({ent.label_}), "
+```
+
+The following named entities were extracted for each of the story description and then stored in the dataframe as lists of each entity.
+
+**PERSON_Entity: Person:** Captures sports persons, teams or other relevant groups or people mentioned in story description. Provides information about the individuals involved in sports, including athletes, coaches, and team owners.  
+
+**ORG_Entity: Organization:**  Captures sport clubs, societies mentioned in the story description. provides information about sports organizations, such as leagues, teams, and governing bodies.  
+
+**PRODUCT_Entity: Products:** Captures products such as gym instruments, sports equipment, and apparel etc.  
+
+**EVENT_Entity:** Events: Captures sports events such as Olympics, etc and information about sports competitions and events.  
+
+**MONEY_Entity: Money:** Captures prize money or campaign donations/requirements mentioned in description. provides information about funding related to sports, including sponsorships, investments, and salaries.  
+
+**DATE_Entity: Date:** Captures absolute or relative dates or periods.  
+
+**TIME_Entity: Time:** Captures mentioned time durations smaller than a day.  
+
+**LOC_Entity: Location:** Captures Countries, cities, states along with Non-GPE locations. provides information about the location of sports events.  
+
+**NORP_Entity: Ethnicities and Nationalities:** Captures Nationalities and ethnicities of groups related to sports/campaign.  
+
+
+
+<p align="center">
+    <img width="1200" src="assets/Visualizations/named_entity_recognition/ner_dataframe.png">
+</p>
+
+The extracted entities provide valuable insights into the world of sports and can be used to inform decision-making related to sports funding and sponsorship.
+
+
+
+
 **Handling Class Imbalance**
 
 SMOTE (Synthetic Minority Over-sampling Technique) is a technique used to handle class imbalance in machine learning. It creates synthetic samples of the minority class by selecting some of the minority class observations and creating new observations that are linear combinations of the original minority observations.
