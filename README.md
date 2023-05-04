@@ -709,19 +709,17 @@ After applying the function, we created a new binary variable named is_english a
 Dataset , dictionary merge process and developing new datasets and merging with original file -- Need to add this
 
 After we arrived at our dataset consisting of words tagged to each sentiment, we looked at the most frequently used words corresponding to each of those sentiments. 
-Here are top words and the word cloud of words that are associated with our sentiment pairs:
+Here are top words and the word cloud of words that are associated with Joy-Sadness, Positive-Negative, Trust-Fear sentiment pairs:
 
-Joy – Sadness Sentiment
 <p align="center">
-    <img width="300" src="/assets/Visualizations/sentiment_analysis/Top_Joy.png">
-</p>
-<p align="center">
-    <img width="300" src="/assets/Visualizations/sentiment_analysis/Top_Sadness.png">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
 </p>
 
+An example of a word cloud we created for Joy sentiment:
 
-Positive Negative Sentiment
-Trust - Fear Sentiment
+<p align="center">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/Cloud_Joy.png">
+</p>
 
 In addition to identifying the top words associated to a sentiment, we also looked at individual stories that have a high score for a particular sentiment to understand how the words align with what people actually say.
 	
