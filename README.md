@@ -709,18 +709,17 @@ After applying the function, we created a new binary variable named is_english a
 Dataset , dictionary merge process and developing new datasets and merging with original file -- Need to add this
 
 After we arrived at our dataset consisting of words tagged to each sentiment, we looked at the most frequently used words corresponding to each of those sentiments. 
-Here are top words and the word cloud of words that are associated with our sentiment pairs:
+Here are top words and the word cloud of words that are associated with Joy-Sadness, Positive-Negative, Trust-Fear sentiment pairs:
 
-Joy – Sadness Sentiment
 <p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Joy.png">
-</p>
-<p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Sadness.png">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
 </p>
 
-Positive Negative Sentiment
-Trust - Fear Sentiment
+An example of word cloud for Joy sentiment:
+
+<p align="center">
+    <img width="800" src="/assets/Visualizations/sentiment_analysis/Cloud_Joy.png">
+</p>
 
 In addition to identifying the top words associated to a sentiment, we also looked at individual stories that have a high score for a particular sentiment to understand how the words align with what people actually say.
 	
@@ -735,10 +734,167 @@ To determine the overall sentiment, sentiment scores for specific sentiment pair
 Following bar charts show the percentage of sentiment scores for different sports and countries, with the sports that have a 100% sentiment value for one sentiment excluded.
 	
 <p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/JoyPerc.png">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/JoyPerc.png">
 </p>
 <p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/JoyPercCountry.png">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/JoyPercCountry.png">
+</p>
+
+**Sentiment Analysis Classification**
+
+Copying the new labels to new CSV file
+
+```Python
+	df['joy_sad'] = df.apply(lambda x: 'joy' if x['joy'] > x['sadness'] else 'sadness', axis=1)
+	df['pos_neg'] = df.apply(lambda x: 'positive' if x['positive'] > x['negative'] else 'negative', axis=1)
+	df['trust_fear'] = df.apply(lambda x: 'trust' if x['trust'] > x['fear'] else 'fear', axis=1)
+	#%%
+	df['joy_sad']
+	#%%
+	df['pos_neg']
+	#%%
+	df['trust_fear']
+	#%%
+	df.to_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv', index=False)
+```
+Checking the Distribution of Joy and Sad 
+
+```Python
+	## Detect Language function
+
+	# %%
+	import matplotlib.pyplot as plt
+
+	# count the occurrences of each category in the 'joy_sad' column
+	counts = df['joy_sad'].value_counts()
+
+	# create a bar plot of the counts
+	plt.bar(counts.index, counts.values)
+
+	# add axis labels and a title
+	plt.xlabel('Emotion')
+	plt.ylabel('Count')
+	plt.title('Counts of Joy and Sadness in Joy-Sadness Column')
+
+	# display the plot
+	plt.show()
+```
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Dist_joy_sad.png">
+</p>
+
+Checking the Distribution of Positive and Negative 
+```Python
+	## Detect Language function
+
+	# %%
+	import matplotlib.pyplot as plt
+
+	# count the occurrences of each category in the 'pos_neg' column
+	counts = df['pos_neg'].value_counts()
+
+	# create a bar plot of the counts
+	plt.bar(counts.index, counts.values)
+
+	# add axis labels and a title
+	plt.xlabel('Emotion')
+	plt.ylabel('Count')
+	plt.title('Counts of pos_neg in pos_neg Column')
+
+	# display the plot
+	plt.show()
+```
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Dist_pos_neg.png">
+</p>
+
+Checking the Distribution of Trust and Fear 
+```Python
+	## Detect Language function
+
+	 %%
+	import matplotlib.pyplot as plt
+
+	# count the occurrences of each category in the 'trust_fear' column
+	counts = df['trust_fear'].value_counts()
+
+	# create a bar plot of the counts
+	plt.bar(counts.index, counts.values)
+
+	# add axis labels and a title
+	plt.xlabel('Emotion')
+	plt.ylabel('Count')
+	plt.title('Counts of trust_fear in trust_fear Column')
+
+	# display the plot
+	plt.show()
+```
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Dist_Trust_Fear.png">
+</p>
+
+**Handling Class Imbalance**
+
+SMOTE (Synthetic Minority Over-sampling Technique) is a technique used to handle class imbalance in machine learning. It creates synthetic samples of the minority class by selecting some of the minority class observations and creating new observations that are linear combinations of the original minority observations.
+
+By using SMOTE, synthetic samples were generated for the minority class ('fear','negative','sad'), resulting in a balanced dataset that can be used to train the sentiment analysis model.
+
+**Classification Model**
+
+```Python
+# Extract the input features and labels
+features = data['StoryCleaned']
+labels = data['joy_sad']
+#%%
+# Define the stop words
+stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'which', 'this', 'that', 'these', 'those', 'then', 'just', 'so', 'than', 'such', 'both', 'through', 'about', 'for', 'is', 'of', 'while', 'during', 'to', 'What', 'Which', 'Is', 'If', 'While', 'This']
+# Vectorize the input features
+vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
+processed_features = vectorizer.fit_transform(features).toarray()
+#%%
+# Handle class imbalance using SMOTE
+smote = SMOTE(random_state=0)
+processed_features, labels = smote.fit_resample(processed_features, labels)
+#%%
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
+#%%
+# Train a Random Forest Classifier on the training data
+text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
+text_classifier.fit(X_train, y_train)
+#%%
+# Make predictions on the test data
+predictions = text_classifier.predict(X_test)
+#%%
+# Evaluate the performance of the model using a confusion matrix
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+
+# %%
+print(classification_report(y_test,predictions))
+# %%
+print(accuracy_score(y_test, predictions))
+# %%
+from sklearn.metrics import plot_confusion_matrix
+plot_confusion_matrix(text_classifier, X_test, y_test)
+
+```
+Joy and Sadness Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Joy_Sad.png">
+</p>
+
+Postive and Negative Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Pos_Neg.png">
+</p>
+
+Trust and Fear Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Trust_Fear.png">
 </p>
 
 
