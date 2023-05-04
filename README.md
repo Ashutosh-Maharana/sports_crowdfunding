@@ -713,11 +713,12 @@ Here are top words and the word cloud of words that are associated with our sent
 
 Joy – Sadness Sentiment
 <p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Joy.png">
+    <img width="300" src="/assets/Visualizations/sentiment_analysis/Top_Joy.png">
 </p>
 <p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/Top_Sadness.png">
+    <img width="300" src="/assets/Visualizations/sentiment_analysis/Top_Sadness.png">
 </p>
+
 
 Positive Negative Sentiment
 Trust - Fear Sentiment
@@ -735,12 +736,93 @@ To determine the overall sentiment, sentiment scores for specific sentiment pair
 Following bar charts show the percentage of sentiment scores for different sports and countries, with the sports that have a 100% sentiment value for one sentiment excluded.
 	
 <p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/JoyPerc.png">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/JoyPerc.png">
 </p>
 <p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/JoyPercCountry.png">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/JoyPercCountry.png">
 </p>
 
+**Sentiment Analysis Classification**
+
+Copying the new labels to new CSV file
+
+	## Detect Language function
+	df['joy_sad'] = df.apply(lambda x: 'joy' if x['joy'] > x['sadness'] else 'sadness', axis=1)
+	df['pos_neg'] = df.apply(lambda x: 'positive' if x['positive'] > x['negative'] else 'negative', axis=1)
+	df['trust_fear'] = df.apply(lambda x: 'trust' if x['trust'] > x['fear'] else 'fear', axis=1)
+	#%%
+	df['joy_sad']
+	#%%
+	df['pos_neg']
+	#%%
+	df['trust_fear']
+	#%%
+	df.to_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv', index=False)
+
+Checking the Distribution of Joy and Sad 
+
+	## Detect Language function
+
+	# %%
+	import matplotlib.pyplot as plt
+
+	# count the occurrences of each category in the 'joy_sad' column
+	counts = df['joy_sad'].value_counts()
+
+	# create a bar plot of the counts
+	plt.bar(counts.index, counts.values)
+
+	# add axis labels and a title
+	plt.xlabel('Emotion')
+	plt.ylabel('Count')
+	plt.title('Counts of Joy and Sadness in Joy-Sadness Column')
+
+	# display the plot
+	plt.show()
+
+
+
+Checking the Distribution of Positive and Negative 
+
+	## Detect Language function
+
+	# %%
+	import matplotlib.pyplot as plt
+
+	# count the occurrences of each category in the 'pos_neg' column
+	counts = df['pos_neg'].value_counts()
+
+	# create a bar plot of the counts
+	plt.bar(counts.index, counts.values)
+
+	# add axis labels and a title
+	plt.xlabel('Emotion')
+	plt.ylabel('Count')
+	plt.title('Counts of pos_neg in pos_neg Column')
+
+	# display the plot
+	plt.show()
+
+Checking the Distribution of Trust and Fear 
+
+	## Detect Language function
+
+	 %%
+	import matplotlib.pyplot as plt
+
+	# count the occurrences of each category in the 'trust_fear' column
+	counts = df['trust_fear'].value_counts()
+
+	# create a bar plot of the counts
+	plt.bar(counts.index, counts.values)
+
+	# add axis labels and a title
+	plt.xlabel('Emotion')
+	plt.ylabel('Count')
+	plt.title('Counts of trust_fear in trust_fear Column')
+
+	# display the plot
+	plt.show()
 
 ## Data Splitting and Sub-Sampling 
 
