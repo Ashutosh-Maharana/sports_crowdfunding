@@ -25,7 +25,7 @@ df['pos_neg']
 #%%
 df['trust_fear']
 #%%
-df.to_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score1.csv', index=False)
+df.to_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv', index=False)
 # %%
 ##joy_sad_percentage values per SportName
 # Create a pivot table to calculate the percentage of joy_sad values per SportName
