@@ -715,7 +715,7 @@ Here are top words and the word cloud of words that are associated with Joy-Sadn
     <img width="800" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
 </p>
 
-An example of a word cloud we created for Joy sentiment:
+An example of word cloud for Joy sentiment:
 
 <p align="center">
     <img width="800" src="/assets/Visualizations/sentiment_analysis/Cloud_Joy.png">
