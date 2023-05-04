@@ -744,7 +744,7 @@ Following bar charts show the percentage of sentiment scores for different sport
 
 Copying the new labels to new CSV file
 
-	## Detect Language function
+```Python
 	df['joy_sad'] = df.apply(lambda x: 'joy' if x['joy'] > x['sadness'] else 'sadness', axis=1)
 	df['pos_neg'] = df.apply(lambda x: 'positive' if x['positive'] > x['negative'] else 'negative', axis=1)
 	df['trust_fear'] = df.apply(lambda x: 'trust' if x['trust'] > x['fear'] else 'fear', axis=1)
@@ -756,9 +756,10 @@ Copying the new labels to new CSV file
 	df['trust_fear']
 	#%%
 	df.to_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv', index=False)
-
+```
 Checking the Distribution of Joy and Sad 
 
+```Python
 	## Detect Language function
 
 	# %%
@@ -777,11 +778,13 @@ Checking the Distribution of Joy and Sad
 
 	# display the plot
 	plt.show()
-
-
+```
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Dist_joy_sad.png">
+</p>
 
 Checking the Distribution of Positive and Negative 
-
+```Python
 	## Detect Language function
 
 	# %%
@@ -800,9 +803,13 @@ Checking the Distribution of Positive and Negative
 
 	# display the plot
 	plt.show()
+```
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Dist_pos_neg.png">
+</p>
 
 Checking the Distribution of Trust and Fear 
-
+```Python
 	## Detect Language function
 
 	 %%
@@ -821,6 +828,68 @@ Checking the Distribution of Trust and Fear
 
 	# display the plot
 	plt.show()
+```
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Dist_Trust_Fear.png">
+</p>
+
+Classification Model
+```Python
+# Extract the input features and labels
+features = data['StoryCleaned']
+labels = data['joy_sad']
+#%%
+# Define the stop words
+stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'which', 'this', 'that', 'these', 'those', 'then', 'just', 'so', 'than', 'such', 'both', 'through', 'about', 'for', 'is', 'of', 'while', 'during', 'to', 'What', 'Which', 'Is', 'If', 'While', 'This']
+# Vectorize the input features
+vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
+processed_features = vectorizer.fit_transform(features).toarray()
+#%%
+# Handle class imbalance using SMOTE
+smote = SMOTE(random_state=0)
+processed_features, labels = smote.fit_resample(processed_features, labels)
+#%%
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
+#%%
+# Train a Random Forest Classifier on the training data
+text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
+text_classifier.fit(X_train, y_train)
+#%%
+# Make predictions on the test data
+predictions = text_classifier.predict(X_test)
+#%%
+# Evaluate the performance of the model using a confusion matrix
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+
+# %%
+print(classification_report(y_test,predictions))
+# %%
+print(accuracy_score(y_test, predictions))
+# %%
+from sklearn.metrics import plot_confusion_matrix
+plot_confusion_matrix(text_classifier, X_test, y_test)
+
+```
+Joy and Sadness Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Joy_Sad.png">
+</p>
+
+Postive and Negative Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Pos_Neg.png">
+</p>
+
+Trust and Fear Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Trust_Fear.png">
+</p>
+
 
 ## Data Splitting and Sub-Sampling 
 
