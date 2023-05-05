@@ -98,3 +98,46 @@ doc = nlp(story_text)
 displacy.render(doc, style='ent', jupyter=True)
 
 # %%
+import matplotlib.pyplot as plt
+import pandas as pd
+# %%
+df = df2
+import matplotlib.pyplot as plt
+
+# Assuming that the data is stored in a dataframe called df
+
+
+
+# create a list of the columns to analyze
+cols_to_analyze = ['PERSON_Entity', 'ORG_Entity', 'PRODUCT_Entity'	,'EVENT_Entity'	,'MONEY_Entity'	,'DATE_Entity'	,'TIME_Entity'	,'LOC_Entity'	,'NORP_Entity']
+
+# create a dataframe to store the results
+results_df = pd.DataFrame(columns=['Column', 'Empty%', 'Not Empty%'])
+
+# calculate the percentages and store them in the results dataframe
+for col in cols_to_analyze:
+    empty_count = df[col].isnull().sum() + df[col].eq('').sum()
+    empty_percent = empty_count / len(df) * 100
+    not_empty_percent = (len(df) - empty_count) / len(df) * 100
+    results_df = results_df.append({'Column': col, 'Empty%': empty_percent, 'Not Empty%': not_empty_percent}, ignore_index=True)
+
+# create a bar chart to visualize the results
+plt.bar(results_df['Column'], results_df['Not Empty%'], color='#008080', label='No Entity %', edgecolor='white', width=0.8)
+plt.bar(results_df['Column'], results_df['Empty%'], color='#FA8072', label='Extracted Entity %', edgecolor='white', width=0.8, bottom=results_df['Not Empty%'])
+plt.xlabel('Named Entities')
+plt.ylabel('Percentage of Stories Mentioning Each Entity')
+plt.title('Mention of Entities in Stories')
+plt.xticks(rotation=90)  # Rotating x-axis labels by 90 degrees for better readability
+
+# Adding percentage labels above the bars
+#for i, value in enumerate(results_df['Empty%']):
+    #plt.text(i, 50+value/2, f"{value:.1f}%", ha='center', fontsize=8, color='black')
+for i, value in enumerate(results_df['Not Empty%']):
+    plt.text(i, value/2, f"{value:.1f}%", ha='center',va='center', fontsize=8, color='black')
+
+plt.legend()
+plt.show()
+
+
+
+# %%
