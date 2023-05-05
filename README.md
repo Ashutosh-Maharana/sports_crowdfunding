@@ -899,7 +899,7 @@ The following named entities were extracted for each of the story description an
 Both successful and unsuccessful stories have almost same distribution of mentioned entities. Overall, Most of the campaingn were related to person (67%) and Organization/Teams(82%). ALmost all authors mentioned their location (80%) and Date (92%) - probably the campaign deadline in their stories. Interestingly Authors have not mentioned products, events and their nationality/ethinicity in their stories. (less than 30% of stories). The extracted entities provide valuable insights into the world of sports and can be used to inform decision-making related to sports funding and sponsorship. The following barchart illutrates the distirubtion of extracted named entities in the dataset,
 
 <p align="center">
-    <img width="800" src="assets/Visualizations/named_entity_recognition/graph.png">
+    <img width="600" src="assets/Visualizations/named_entity_recognition/graph.png">
 </p>
 
 
