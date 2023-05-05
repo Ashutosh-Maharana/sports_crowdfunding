@@ -872,23 +872,32 @@ For each story, the identified entities were stored in separate columns in the d
 
 The following named entities were extracted for each of the story description and then stored in the dataframe as lists of each entity.
 
-**PERSON_Entity: Person:** Captures sports persons, teams or other relevant groups or people mentioned in story description. Provides information about the individuals involved in sports, including athletes, coaches, and team owners.  
+**PERSON_Entity: Person:**   
+Captures sports persons, teams or other relevant groups or people mentioned in story description. Provides information about the individuals involved in sports, including athletes, coaches, and team owners.  
 
-**ORG_Entity: Organization:**  Captures sport clubs, societies mentioned in the story description. provides information about sports organizations, such as leagues, teams, and governing bodies.  
+**ORG_Entity: Organization:**    
+Captures sport clubs, societies mentioned in the story description. provides information about sports organizations, such as leagues, teams, and governing bodies.  
 
-**PRODUCT_Entity: Products:** Captures products such as gym instruments, sports equipment, and apparel etc.  
+**PRODUCT_Entity: Products:**   
+Captures products such as gym instruments, sports equipment, and apparel etc.  
 
-**EVENT_Entity:** Events: Captures sports events such as Olympics, etc and information about sports competitions and events.  
+**EVENT_Entity: Events:**   
+Captures sports events such as Olympics, etc and information about sports competitions and events.  
 
-**MONEY_Entity: Money:** Captures prize money or campaign donations/requirements mentioned in description. provides information about funding related to sports, including sponsorships, investments, and salaries.  
+**MONEY_Entity: Money:**   
+Captures prize money or campaign donations/requirements mentioned in description. provides information about funding related to sports, including sponsorships, investments, and salaries.  
 
-**DATE_Entity: Date:** Captures absolute or relative dates or periods.  
+**DATE_Entity: Date:**   
+Captures absolute or relative dates or periods.  
 
-**TIME_Entity: Time:** Captures mentioned time durations smaller than a day.  
+**TIME_Entity: Time:**   
+Captures mentioned time durations smaller than a day.  
 
-**LOC_Entity: Location:** Captures Countries, cities, states along with Non-GPE locations. provides information about the location of sports events.  
+**LOC_Entity: Location:**   
+Captures Countries, cities, states along with Non-GPE locations. provides information about the location of sports events.  
 
-**NORP_Entity: Ethnicities and Nationalities:** Captures Nationalities and ethnicities of groups related to sports/campaign.  
+**NORP_Entity: Ethnicities and Nationalities:**   
+Captures Nationalities and ethnicities of groups related to sports/campaign.  
 
 
 
