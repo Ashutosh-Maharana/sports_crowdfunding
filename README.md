@@ -1037,11 +1037,11 @@ analysis_df2_test <- anti_join(analysis_df2, analysis_df2_train, by='id')
 * Firstly, the dependent variable Success, shows that the class imbalance is preserved well in the test dataset. Secondly, the independent variable TeamorAthlete also has its distribution preserved in the test data
 
 <p align="center">
-    <img width="780" height = "350" src="/assets/Visualizations/data_sampling/success_fail.png">
+    <img width="780" height = "400" src="/assets/Visualizations/data_sampling/success_fail.png">
 </p>
 
 <p align="center">
-    <img width="780" height = "350" src="/assets/Visualizations/data_sampling/team_athlete.png">
+    <img width="780" height = "400" src="/assets/Visualizations/data_sampling/team_athlete.png">
 </p>
 
 
@@ -1081,10 +1081,19 @@ t.test(analysis_df2_train$FundingGoalAdjusted, analysis_df2_test$FundingGoalAdju
 | Funding Goal | -0.90115 | 0.3689 | Null hypothesis that means are not different is not rejected |
 
 **Final Datasets for Analysis**
-
+* Our statistical summaries and t-tests showed that the train and test datasets are fairly similarly distributed and can be utilized for analysis
 * The final datasets are stored as [final_data_train.csv](/data/data_analysis/final_data_train.csv) and [final_data_test.csv](/data/data_analysis/final_data_test.csv)
 
 ## Select Modeling Techniques
+
+Our business objectives are driven by two main goals:
+<ul>
+    <li> Firstly, to understand the effects of various linguistic aspects (ex. Narcissism, Sentiments) and various structural aspects of a campaign (ex. Funding Goal, Team/Athlete) on the chances of succeeding in raising funds
+    <li> Secondly, to build a model that can predict the chances of success or failure with a high accuracy and performance. This can help us understand the dynamics of the sports crowdfunding market. 
+</ul>
+<br>
+
+
 
 ## Build the Models
 
