@@ -1266,7 +1266,7 @@ Fear: Transformation improved the distribution of the variable
 * Based on the modeling results, we chose Model 3 as our final logistic regression model. We conducted ANOVA on Model 3 to confirm the significance of the effects. We see that the effects of logFundingGoalAdjusted, logTrust and logNegative are significant. <br>
 
 <p align="center">
-    <img width="600" height = "400" src="/assets/Visualizations/parameter_estimation/anova_model3_final.png">
+    <img width="600" height = "350" src="/assets/Visualizations/parameter_estimation/anova_model3_final.png">
 </p>
 
 
