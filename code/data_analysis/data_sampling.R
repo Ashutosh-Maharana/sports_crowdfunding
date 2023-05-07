@@ -29,6 +29,7 @@ analysis_df2 <- analysis_df2[complete.cases(analysis_df2),]
 # Modifying the types of categorical variables
 analysis_df2$Success <- as.factor(ifelse(analysis_df2$Success == "success", "success", "fail"))
 analysis_df2$TeamOrAthlete <- as.factor(analysis_df2$TeamOrAthlete)
+# Converting certain variables into numeric types 
 analysis_df2$AmountAdjusted <- as.numeric(analysis_df2$AmountAdjusted)
 analysis_df2$FundingGoalAdjusted <- as.numeric(analysis_df2$FundingGoalAdjusted)
 
@@ -76,3 +77,18 @@ sd(analysis_df2_test$numSupporters)
 
 write.csv(analysis_df2_train, paste(getwd(),"/data/data_analysis/final_data_train.csv",sep=""))
 write.csv(analysis_df2_test, paste(getwd(),"/data/data_analysis/final_data_test.csv",sep=""))
+
+
+# T-tests to test differences in means of numerical variables
+t.test(analysis_df2_train$numSupporters, analysis_df2_test$numSupporters)
+t.test(analysis_df2_train$AmountAdjusted, analysis_df2_test$AmountAdjusted)
+t.test(analysis_df2_train$Wordcount, analysis_df2_test$Wordcount)
+t.test(analysis_df2_train$NarcissismFactor, analysis_df2_test$NarcissismFactor)
+t.test(analysis_df2_train$joy, analysis_df2_test$joy)
+t.test(analysis_df2_train$sadness, analysis_df2_test$sadness)
+t.test(analysis_df2_train$positive, analysis_df2_test$positive)
+t.test(analysis_df2_train$negative, analysis_df2_test$negative)
+t.test(analysis_df2_train$fear, analysis_df2_test$fear)
+t.test(analysis_df2_train$trust, analysis_df2_test$trust)
+t.test(analysis_df2_train$FundingGoalAdjusted, analysis_df2_test$FundingGoalAdjusted)
+

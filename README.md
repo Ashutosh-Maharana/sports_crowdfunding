@@ -129,6 +129,7 @@ campaign_name = driver.find_element(By.XPATH, "/html/body/div[1]/section/div[1]/
             
 
 ```
+
 | Descriptor Name | XPATH | 
 |:---|:---|
 | Campaign Name | /html/body/div[1]/section/div[1]/div[1]/div[2]/div[{}]/div[{}]/div/div[1]/a/h5 |
@@ -609,6 +610,15 @@ We have 1143 observations of following variables.<br>
 | entitlement | Measure of entitlement | Numeric (Integer) | Analyst generated | [final_data_merged_storycleaned_wordcounts.csv](/data/clean_data/final_data_merged_storycleaned_wordcounts.csv) | 0, 3, 14 |
 | exploitativeness | Measure of exploitativeness | Numeric (Integer) | Analyst generated | [final_data_merged_storycleaned_wordcounts.csv](/data/clean_data/final_data_merged_storycleaned_wordcounts.csv) | 0, 3, 14 |
 | NarcissismFactor | Latent Factor driving Narcissism | Numeric (Float) | Analyst generated | [final_dataset_analysis.csv](/data/clean_data/final_dataset_analysis.csv) | 23.814, 0.628 |
+| Joy | Sentiment Analysis using NRC Lexicon | Numeric (Float) | Analyst generated | [final_dataset_textanalysis_sentiment_score_updated.csv](/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv) | 23.814, 0.628 |
+| Sadness | Sentiment Analysis using NRC Lexicon | Numeric (Float) | Analyst generated | [final_dataset_textanalysis_sentiment_score_updated.csv](/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv) | 23.814, 0.628 |
+| Trust | Sentiment Analysis using NRC Lexicon | Numeric (Float) | Analyst generated | [final_dataset_textanalysis_sentiment_score_updated.csv](/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv) | 23.814, 0.628 |
+| Fear | Sentiment Analysis using NRC Lexicon | Numeric (Float) | Analyst generated | [final_dataset_textanalysis_sentiment_score_updated.csv](/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv) | 23.814, 0.628 |
+| Positive | Sentiment Analysis using NRC Lexicon | Numeric (Float) | Analyst generated | [final_dataset_textanalysis_sentiment_score_updated.csv](/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv) | 23.814, 0.628 |
+| Negative | Sentiment Analysis using NRC Lexicon | Numeric (Float) | Analyst generated | [final_dataset_textanalysis_sentiment_score_updated.csv](/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv) | 23.814, 0.628 |
+
+
+
 <br>
 
 The purpose of each variable and desciption is presented in the table below<br>
@@ -647,7 +657,12 @@ The purpose of each variable and desciption is presented in the table below<br>
 | entitlement | Measure of entitlement dimension in narcissism based on Anglin et al. 2018. Will be used in finding out the latent factor driving narcissistic rhetoric using factor analysis |
 | exploitativeness | Measure of exploitativeness dimension in narcissism based on Anglin et al. 2018. Will be used in finding out the latent factor driving narcissistic rhetoric using factor analysis |
 | NarcissismFactor | The final latent factor derived as a weighted average of individual dimensional wordcounts |
-
+| Joy | The wordcount capturing the number of "Joy" expressing words in the campaign description |
+| Sadness | The wordcount capturing the number of "Sadbess" expressing words in the campaign description |
+| Trust | The wordcount capturing the number of "Trust" expressing words in the campaign description |
+| Fear | The wordcount capturing the number of "Fear" expressing words in the campaign description |
+| Positive | The wordcount capturing the number of "Positive" expressing words in the campaign description |
+| Negative | The wordcount capturing the number of "Negative" expressing words in the campaign description |
 
 ## Descriptive Statistics and Analysis
 
@@ -981,6 +996,93 @@ Trust and Fear Confusion Matrix and Classification Report
 
 
 ## Data Splitting and Sub-Sampling 
+
+* Our final sample size with complete data for analysis has 792 records. This being a relatively small sample for analysis, we chose to go ahead with a 80-20 split for train-test.
+* The idea behind not using a validation split is that in our classification model, we aim to use a 10-fold cross validation approach, which then leverages the training data itself for pruning the model parameters
+* We first convert the variables into their respective data types to ensure that the sampling proces works correctly.
+
+```R
+# Modifying the types of categorical variables
+analysis_df2$Success <- as.factor(ifelse(analysis_df2$Success == "success", "success", "fail"))
+analysis_df2$TeamOrAthlete <- as.factor(analysis_df2$TeamOrAthlete)
+# Converting certain variables into numeric types 
+analysis_df2$AmountAdjusted <- as.numeric(analysis_df2$AmountAdjusted)
+analysis_df2$FundingGoalAdjusted <- as.numeric(analysis_df2$FundingGoalAdjusted)
+```
+
+* There are two primary categorical variables - Success and TeamorAthlete which have significant class imbalance. Hence, to ensure that the class distributions are preserved in train and test datasets we used a stratified sampling approach
+
+```R
+# Train-Test split of 80-20 
+# Since low sample size, higher train amount will benefit training
+# Cross-validation can be used
+# Stratified sampling to maintain distributions of Success, TeamorAthlete
+
+# Creating an ID vector
+analysis_df2$id <- 1:nrow(analysis_df2)
+
+analysis_df2_train <- analysis_df2 %>%
+  group_by(Success, TeamOrAthlete) %>%
+  mutate(num_rows=n()) %>%
+  sample_frac(0.8, weight=num_rows) %>%
+  ungroup
+
+analysis_df2_test <- anti_join(analysis_df2, analysis_df2_train, by='id')
+```
+
+* With this splitting process, we ensure that the train and test datasets are aimed at ensuring that the distributions of Success and TeamorAthlete variables are preserved
+
+**Train and Test Categorical variable distributions**
+* To check if the sampling process worked well, we looked at the two categorical variables and their distributions in both train and test datasets
+* Firstly, the dependent variable Success, shows that the class imbalance is preserved well in the test dataset. Secondly, the independent variable TeamorAthlete also has its distribution preserved in the test data
+
+<p align="center">
+    <img width="780" height = "350" src="/assets/Visualizations/data_sampling/success_fail.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "350" src="/assets/Visualizations/data_sampling/team_athlete.png">
+</p>
+
+
+**Statistical Summary of variables in Train and Test data** 
+* The statistical summaries shows that except for the Funding Goal variable, all the other numerical and categorical variables exhibit almost the same mean, median and standard deviations across both train and test datasets
+![stats-sampling](/assets/Visualizations/data_sampling/statistical_summary.png)
+
+**T-tests of means**
+
+```R
+# T-tests to test differences in means of numerical variables
+t.test(analysis_df2_train$numSupporters, analysis_df2_test$numSupporters)
+t.test(analysis_df2_train$AmountAdjusted, analysis_df2_test$AmountAdjusted)
+t.test(analysis_df2_train$Wordcount, analysis_df2_test$Wordcount)
+t.test(analysis_df2_train$NarcissismFactor, analysis_df2_test$NarcissismFactor)
+t.test(analysis_df2_train$joy, analysis_df2_test$joy)
+t.test(analysis_df2_train$sadness, analysis_df2_test$sadness)
+t.test(analysis_df2_train$positive, analysis_df2_test$positive)
+t.test(analysis_df2_train$negative, analysis_df2_test$negative)
+t.test(analysis_df2_train$fear, analysis_df2_test$fear)
+t.test(analysis_df2_train$trust, analysis_df2_test$trust)
+t.test(analysis_df2_train$FundingGoalAdjusted, analysis_df2_test$FundingGoalAdjusted)
+```
+
+| Variable Name | t-stat | p-value | Final Comments|
+|:---|:---|:---:|:---|
+| numSupporters | 0.0686 | 0.9454 | Null hypothesis that means are not different is not rejected |
+| AmountAdjusted | -0.15015 | 0.8808 | Null hypothesis that means are not different is not rejected |
+| Wordcount | -0.6499 | 0.5163 | Null hypothesis that means are not different is not rejected |
+| NarcissismFactor | -0.14995 | 0.8809 | Null hypothesis that means are not different is not rejected |
+| joy | -0.486 | 0.6274 | Null hypothesis that means are not different is not rejected |
+| sadness | 0.9916 | 0.3223 | Null hypothesis that means are not different is not rejected |
+| positive | -0.9108 | 0.3633 | Null hypothesis that means are not different is not rejected |
+| negative | 0.63985 | 0.5228 | Null hypothesis that means are not different is not rejected |
+| fear | 0.2602 | 0.7949 | Null hypothesis that means are not different is not rejected |
+| trust | -0.749 | 0.4546 | Null hypothesis that means are not different is not rejected |
+| Funding Goal | -0.90115 | 0.3689 | Null hypothesis that means are not different is not rejected |
+
+**Final Datasets for Analysis**
+
+* The final datasets are stored as [final_data_train.csv](/data/data_analysis/final_data_train.csv) and [final_data_test.csv](/data/data_analysis/final_data_test.csv)
 
 ## Select Modeling Techniques
 
