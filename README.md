@@ -1346,21 +1346,50 @@ The final decision tree with 12 terminal nodes and its significant rules are:
 ![dectree-3](/assets/Visualizations/parameter_estimation/pruneddecisiontree_textmodel.png)
 
 
-The significant rules and their interpretations are:
+The significant rules are:
 | Outcome | Rules | 
 |:---|:---|
-| Success | -0.7425 |
-| Fail | -0.7425 |
+| Success | logNegative < 2.4414, logJoy < 0.8959, logFundingGoalAdjusted < 3.4913, logNarcissismFactor < 1.4393 |
+| Success | logNegative < 2.4414, logJoy < 0.8959, logFundingGoalAdjusted < 3.4913, logJoy > 1.7006, logFundingGoalAdjusted < 2.3909 |
+| Success | logNegative > 2.4414, logFear < 2.0127, logFundingGoalAdjusted < 3.7469 |
+| Fail | logNegative < 2.4414, logJoy < 0.8959, logFundingGoalAdjusted < 3.4913, logNarcissismFactor > 1.4393 |
+| Fail | logNegative < 2.4414, logFundingGoalAdjusted > 3.4913 |
+| Fail | logNegative < 2.4414, logJoy < 0.8959 |
+| Fail | logNegative < 2.4414, logJoy < 0.8959, logFundingGoalAdjusted < 3.4913, logJoy < 1.7006 |
+| Fail | logNegative < 2.4414, logJoy < 0.8959, logFundingGoalAdjusted < 3.4913, logJoy > 1.7006, logFundingGoalAdjusted > 2.3909, logNarcissismFactor > 1.2393 |
+| Fail | logNegative > 2.4414, logFear < 2.0127, logFundingGoalAdjusted > 3.7469 |
+| Fail | logNegative > 2.4414, logFear > 2.0127|
 
-## Assess the Models
+* The decision tree rules are much richer in their information value and business use. 
+* We observed that there are 3 significant rules that pertained to the Success: particularly, we observe that lower funding goals, lower narcissistic content, lower Joy sentiment and lower Fear sentiment are associated with success.
+* This correlates well with the results of the logistic regression model.
+
+## Model Assessment
 
 **Comparison of Logistic Regression and Decision Tree**
 
-* We compared the models on the Area Under the ROC Cuver (AUC) metric which combines both sensitivity and specificity at all classification thresholds: <br>
+* We compared the models on the Area Under the ROC Cuver (AUC) metric which combines both sensitivity and specificity at all classification thresholds on the _test_ dataset: <br>
+
+```R
+# Calculating AUC of logistic regression model
+predicted <- predict(logreg1, test_df, type = "response")
+auc(test_df$Success, predicted)
+
+# Calculating AUC for unpruned decision tree
+predicted <- predict(dectree1, test_decisiontree, type = "vector")
+auc(test_df$Success, predicted[,2])
+
+# Calculating AUC for pruned decision tree
+predicted <- predict(pruneddectree2, test_decisiontree, type = "vector")
+auc(test_df$Success, predicted[,2])
+```
+
 
 | Model | AUC | Comments | 
-|:---|:---|:---:|
-| Model 3 Logistic Regression | xxx | xxx | 
+|:---|:---|:---|
+| Model 3 Logistic Regression | 0.6846 | Highest AUC and therefore the best model for business understanding purposes | 
+| Unpruned decision tree | 0.5764 | Unpruned decision tree is not useful because of the large number of rules which are complex and hard to understand. Lower AUC than the logistic regression |
+| Optimal decision tree (12 nodes) | 0.5227 | As expected the AUC of the decision tree drops after pruning (optimizing for cost complexity) |
 
 
 ## Classification using Neural Networks
