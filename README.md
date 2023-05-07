@@ -1288,11 +1288,59 @@ Based on the final model results, the significant effects and their interpretati
 
 **Building a Decision Tree**
 
+We first build an unpruned decision tree with default settings and "Gini index" as the metric to use for identifying the split criterion
+
 ```R
+# Decision Tree
+set.seed(1234)
+train_decisiontree <- train_df %>% 
+  select(TeamOrAthlete, logFundingGoalAdjusted, logNarcissismFactor, logTrust, logFear,
+         logNegative, logJoy, logSadness)
+test_decisiontree <- test_df %>% 
+  select(TeamOrAthlete, logFundingGoalAdjusted, logNarcissismFactor, logTrust, logFear,
+         logNegative, logJoy, logSadness)
+
+# Building an unpruned decision tree with Gini index as the primary metric
+dectree1 <- tree(Success~., train_decisiontree, mindev=1e-6, minsize=2, split = 'gini' ) 
+plot(dectree1)
+text(dectree1)
+```
+
+As shown below the final decision tree is highly complex and cannot be used clearly to identify final decision rules
+
+![dectree-1](/assets/Visualizations/parameter_estimation/unpruneddecisiontree_model.png)
 
 **Pruning the Decision Tree**
 
+We further prune the decision tree to check for an optimal number of terminal nodes using the trade-off between cost-complexity and deviance of the model. The plot below shows the tradeoff: <br>
+
+```R
+# Finding the best tradeoff for deviance and cost-complexity
+pruneddectree1 <- prune.tree(dectree1)
+plot(pruneddectree1)
+
+```
+
+<p align="center">
+    <img width="500" height = "500" src="/assets/Visualizations/parameter_estimation/pruning_tradeoffplot.png">
+</p>
+
+
 **Optimal Final Decision Tree**
+
+We observed that the an optimal decision tree can have maximum of 12 terminal nodes where the cost complexity drops to 4.9.
+
+```R
+# Best decision tree considering deviance and cost-complexity is at 12 terminal nodes
+pruneddectree2 <- prune.tree(dectree1, best = 12)
+pruneddectree2
+plot(pruneddectree2)
+text(pruneddectree2)
+```
+
+![dectree-2](/assets/Visualizations/parameter_estimation/pruneddecisiontree_model.png)
+
+
 
 **Results and Interpretation**
 
