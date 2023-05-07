@@ -926,7 +926,13 @@ Both successful and unsuccessful stories have almost same distribution of mentio
     <img width="600" src="assets/Visualizations/named_entity_recognition/graph.png">
 </p>
 
+Since the combinned text length of Story description exceeded the maximum length allowed by spaCy's NER model, the nlp.max_length limit was increased to 2 million characters to allow for larger input texts. 
 
+I have added the stop words from the spacy language model and then used the is_stop attribute to remove them. I have also used lemmatization to convert the words to their base form to reduce the number of unique words.
+
+
+
+In conclusion, the above code and its result showcase the power of NLP techniques in extracting valuable insights from large datasets of text data. The use of custom stop words and categorization of entities into different types helps in cleaning the data and making it more interpretable. The resulting dictionaries can be used for various applications such as topic modeling, sentiment analysis, and trend analysis in the spor industry.
 
 
 
