@@ -1095,13 +1095,13 @@ Our business objectives are driven by two main goals:
 
 We chose 3 primary modeling approaches that would enable us in achieving our two goals:
 | Modeling Technique | Business Purpose | Comments | Assumptions |
-|:---|:---|:---:|:---|
+|:---|:---|:---|:---|
 | Logistic Regression | Business Understanding | Logistic Regression allows us to learn the significance of effects of each of the independent variables (linguistic and structural aspects of campaigns) and help us build rules accordingly | The model assumes that the independent variables are normally distributed and independent, missing data is dropped from analysis |
 | Decision Tree | Business Understanding | Decision tree allows us to build rules that directly associate with the success or failure of a campaign | The model does not assume any distributions on the independent variables. The model can take care of missing data itself |
-| Neural Networks | Business Understanding | Logistic Regression allows us to learn the significance of effects of each of the independent variables (linguistic and structural aspects of campaigns) and help us build rules accordingly | The model does not assume any distributions on the independent variables |
+| Neural Networks | Business Understanding | Neural Networks act as black-boxes but have very high capability to model non-linear relationships in the data and can provide high predictive power | The model does not assume any distributions on the independent variables |
 
 
-## Model Building
+## Model Building for Business Understanding
 
 ### Logistic Regression using R
 
@@ -1151,7 +1151,7 @@ test_df$logFundingGoalAdjusted <- log10(test_df$FundingGoalAdjusted + 1)
 
 * We looked at the histograms and QQ-plots of each of the numerical variables to see the effects of transformation and the closeness to normal distribution, because the normality assumption is needed for logistic regression
 
-Funding Goal:
+Funding Goal: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/fundinggoal_transformation.png">
@@ -1161,7 +1161,7 @@ Funding Goal:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/fundinggoalQQplot.png">
 </p>
 
-NumSupporters: 
+NumSupporters: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/numsupporters_transformation_histogram.png">
@@ -1171,7 +1171,7 @@ NumSupporters:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/numsupportersQQplot.png">
 </p>
 
-Wordcount:
+Wordcount: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/wordcount_transformation.png">
@@ -1181,7 +1181,7 @@ Wordcount:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/wordcountQQplot.png">
 </p>
 
-NarcissismFactor:
+NarcissismFactor: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/narcissismfactor_transformation.png">
@@ -1191,7 +1191,7 @@ NarcissismFactor:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/narcissismfactorQQplot.png">
 </p>
 
-Joy:
+Joy: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/joy_transformation.png">
@@ -1201,7 +1201,7 @@ Joy:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/joyQQplot.png">
 </p>
 
-Sadness:
+Sadness: Transformation had only a marginal effect on the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/sadness_transformation.png">
@@ -1211,7 +1211,7 @@ Sadness:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/sadnessQQplot.png">
 </p>
 
-Positive:
+Positive: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/positive_transformation.png">
@@ -1221,7 +1221,7 @@ Positive:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/positiveQQplot.png">
 </p>
 
-Negative:
+Negative: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/negative_transformation.png">
@@ -1231,7 +1231,7 @@ Negative:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/negativeQQplot.png">
 </p>
 
-Trust:
+Trust: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/trust_transformation.png">
@@ -1241,7 +1241,7 @@ Trust:
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/trustQQplot.png">
 </p>
 
-Fear:
+Fear: Transformation improved the distribution of the variable
 
 <p align="center">
     <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/fear_transformation.png">
@@ -1253,12 +1253,61 @@ Fear:
 
 **Model Evaluation**
 
+* We evaluated multiple logistic regression models and looked at the Variance Inflation Factor metric to remove the variables that had high multicorrelation
+* Model 1 included all the independent variables. We see that the variables logWordcount and logPositive have high VIF values. This model is not stable.
+![model-1](/assets/Visualizations/parameter_estimation/model1_highvif.png)
+* Model 2 excludes logWordcount with the highest VIF. Still we see that logPositive has a VIF greater than 5 indicating high multicorrelation
+![model-1](/assets/Visualizations/parameter_estimation/model2_highvif.png)
+* Model 3 excluded both logWordcount and logPositive. We observe now that all the VIF values are less than 2.5 indicating low multicorrelation among variables. This model is stable and has a AIC of 272.71
+![model-1](/assets/Visualizations/parameter_estimation/model3_final.png)
+
 **Final Model**
+
+* Based on the modeling results, we chose Model 3 as our final logistic regression model. We conducted ANOVA on Model 3 to confirm the significance of the effects. We see that the effects of logFundingGoalAdjusted, logTrust and logNegative are significant. <br>
+
+<p align="center">
+    <img width="600" height = "400" src="/assets/Visualizations/parameter_estimation/anova_model3_final.png">
+</p>
+
 
 **Results and Interpretation**
 
+Based on the final model results, the significant effects and their interpretations are mentioned below:
+
+| Variable | log-odds | odds | p-value | Interpretation 
+|:---|:---|:---|:---|:---|
+| Funding Goal | -0.7425 | .476 | 0.0208 | With every unit % increase in Funding Goal the odds of success fall by 0.476 times : Higher funding goal is not good for crowdfunding success |
+| Trust | 0.9527 | 2.593 | 0.0502 | With every unit % increase in the trust sentiment in the campaign descriptions the odds of success increase by 2.593 times: Higher use of trustworthy words/phrases is good for crowdfunding success |
+| Negative | 0.724 | 2.063 | 0.0334 | With every unit % increase in the negative sentiment in the campaign descriptions the odds of success increase by 2.593 times: Higher use of negative sentiment words/phrases is good for crowdfunding success |
+
+* We observe that counter-intuitive to what we may believe, use of negative sentiment words is likely to improve chances of sports crowdfunding success. This means that the crowdfunding audience is likely to be attracted to campaigns which talk about the need for money, lack of resources, the journey and its difficulties etc.
+
+
+
+### Decision Tree using R
+
+**Building a Decision Tree**
+
+```R
+
+**Pruning the Decision Tree**
+
+**Optimal Final Decision Tree**
+
+**Results and Interpretation**
 
 ## Assess the Models
+
+**Comparison of Logistic Regression and Decision Tree**
+
+* We compared the models on 
+
+| Model | AUC | Comments | 
+|:---|:---|:---:|
+| Model 3 Logistic Regression | xxx | xxx | 
+
+
+## Classification using Neural Networks
 
 ## Conclusion and Discussion
 
