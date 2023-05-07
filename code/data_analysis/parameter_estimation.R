@@ -3,6 +3,12 @@
 # install.packages('pROC')
 # install.packages('gridExtra')
 # install.packages('ggpubr')
+# install.packages('DAAG')
+# install.packages('tree')
+# install.packages('caret')
+# install.packages('mlbench')
+# install.packages('rpart.plot')
+# install.packages('party')
 
 # Loading libraries
 library(Hmisc)
@@ -11,7 +17,14 @@ library(ggplot2)
 library(gridExtra)
 library(ggpubr)
 library(car)
-
+library(DAAG)
+library(party)
+library(rpart)
+library(rpart.plot)
+library(mlbench)
+library(caret)
+library(tree)
+library(dplyr)
 
 
 
@@ -153,7 +166,7 @@ logreg1 <- glm(Success ~ TeamOrAthlete + logFundingGoalAdjusted
                         # + logWordcount
                         + logNarcissismFactor 
                         + logTrust + logFear
-                        + logPositive
+                        # + logPositive
                         + logNegative
                         + logJoy + logSadness, 
                         family = "binomial",
@@ -163,3 +176,40 @@ summary(logreg1)
 vif(logreg1)
 
 Anova(logreg1)
+
+# Calculating AUC
+predicted <- predict(logreg1, test_df, type = "response")
+auc(test_df$Success, predicted)
+
+
+# Decision Tree
+set.seed(1234)
+train_decisiontree <- train_df %>% 
+  select(TeamOrAthlete, logFundingGoalAdjusted, logNarcissismFactor, logTrust, logFear,
+         logNegative, logJoy, logSadness)
+test_decisiontree <- test_df %>% 
+  select(TeamOrAthlete, logFundingGoalAdjusted, logNarcissismFactor, logTrust, logFear,
+         logNegative, logJoy, logSadness)
+
+# Building an unpruned decision tree with Gini index as the primary metric
+dectree1 <- tree(Success~., train_decisiontree, mindev=1e-6, minsize=2, split = 'gini' ) 
+plot(dectree1)
+text(dectree1)
+
+# Finding the best tradeoff for deviance and cost-complexity
+pruneddectree1 <- prune.tree(dectree1)
+plot(pruneddectree1)
+
+# Best decision tree considering deviance and cost-complexity is at 12 terminal nodes
+pruneddectree2 <- prune.tree(dectree1, best = 12)
+pruneddectree2
+plot(pruneddectree2)
+text(pruneddectree2)
+
+# Calculating AUC for unpruned decision tree
+predicted <- predict(dectree1, test_decisiontree, type = "vector")
+auc(test_df$Success, predicted[,2])
+
+# Calculating AUC for pruned decision tree
+predicted <- predict(pruneddectree2, test_decisiontree, type = "vector")
+auc(test_df$Success, predicted[,2])
