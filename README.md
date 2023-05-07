@@ -1163,24 +1163,93 @@ Funding Goal:
 
 NumSupporters: 
 
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/numsupporters_transformation_histogram.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/numsupportersQQplot.png">
+</p>
+
 Wordcount:
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/wordcount_transformation.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/wordcountQQplot.png">
+</p>
 
 NarcissismFactor:
 
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/narcissismfactor_transformation.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/narcissismfactorQQplot.png">
+</p>
 
 Joy:
 
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/joy_transformation.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/joyQQplot.png">
+</p>
+
 Sadness:
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/sadness_transformation.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/sadnessQQplot.png">
+</p>
 
 Positive:
 
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/positive_transformation.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/positiveQQplot.png">
+</p>
+
 Negative:
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/negative_transformation.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/negativeQQplot.png">
+</p>
 
 Trust:
 
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/trust_transformation.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/trustQQplot.png">
+</p>
+
 Fear:
 
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/fear_transformation.png">
+</p>
 
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/fearQQplot.png">
+</p>
 
 **Model Evaluation**
 
