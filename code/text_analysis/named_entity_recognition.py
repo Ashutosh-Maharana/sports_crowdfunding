@@ -17,6 +17,7 @@ df = pd.read_csv("{}\\data\\clean_data\\final_dataset_textanalysis_sentiment_sco
 
 # filter for English language stories
 english_df = df[df['is_english'] == 1].copy()
+english_df.columns
 # %%
 # create columns to store named entity recognition results
 entities = ['PERSON', 'ORG', 'PRODUCT', 'EVENT', 'MONEY', 'DATE', 'TIME', 'GPE', 'LOC', 'NORP']
@@ -139,5 +140,62 @@ plt.legend()
 plt.show()
 
 
+
+# %%
+
+#Finding top 5  entities
+
+
+# Read the dataset into a pandas dataframe
+df = english_df
+# %%
+# Combine all the records in the "Story_Original" column into a single string
+combined_text = ' '.join(df['Story_Original'].astype(str))
+# %%
+# Perform Named Entity Recognition (NER) on the combined text
+nlp.max_length = 2000000
+doc = nlp(combined_text)
+# %%
+# Create dictionaries to store the entities for each entity type
+entity_dict = {
+    'PERSON': {},
+    'ORG': {},
+    'PRODUCT': {},
+    'EVENT': {},
+    'MONEY': {},
+    'DATE': {},
+    'TIME': {},
+    'LOC': {},
+    'NORP': {}
+}
+# %%
+# Iterate over the entities in the document and add them to the corresponding entity dictionary
+for ent in doc.ents:
+    if ent.label_ in entity_dict:
+        if ent.text in entity_dict[ent.label_]:
+            entity_dict[ent.label_][ent.text] += 1
+        else:
+            entity_dict[ent.label_][ent.text] = 1
+# %%
+
+# Remove stopwords and lemmatize the words
+for key in entity_dict.keys():
+    new_dict = {}
+    for entity, count in entity_dict[key].items():
+        entity = ' '.join([word.lemma_ for word in nlp(entity.lower()) if not word.is_stop])
+        if entity in new_dict:
+            new_dict[entity] += count
+        else:
+            new_dict[entity] = count
+    entity_dict[key] = new_dict
+
+# %% 
+# Print the top 5 entities for each entity type
+for entity_type in entity_dict:
+    print(entity_type)
+    sorted_entities = sorted(entity_dict[entity_type], key=entity_dict[entity_type].get, reverse=True)[:5]
+    for entity in sorted_entities:
+        print(f"{entity}: {entity_dict[entity_type][entity]}")
+    print()
 
 # %%
