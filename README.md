@@ -1340,15 +1340,23 @@ text(pruneddectree2)
 
 ![dectree-2](/assets/Visualizations/parameter_estimation/pruneddecisiontree_model.png)
 
-
-
 **Results and Interpretation**
+
+The final decision tree with 12 terminal nodes and its significant rules are:
+![dectree-3](/assets/Visualizations/parameter_estimation/pruneddecisiontree_textmodel.png)
+
+
+The significant rules and their interpretations are:
+| Outcome | Rules | 
+|:---|:---|
+| Success | -0.7425 |
+| Fail | -0.7425 |
 
 ## Assess the Models
 
 **Comparison of Logistic Regression and Decision Tree**
 
-* We compared the models on 
+* We compared the models on the Area Under the ROC Cuver (AUC) metric which combines both sensitivity and specificity at all classification thresholds: <br>
 
 | Model | AUC | Comments | 
 |:---|:---|:---:|
