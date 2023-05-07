@@ -1088,14 +1088,106 @@ t.test(analysis_df2_train$FundingGoalAdjusted, analysis_df2_test$FundingGoalAdju
 
 Our business objectives are driven by two main goals:
 <ul>
-    <li> Firstly, to understand the effects of various linguistic aspects (ex. Narcissism, Sentiments) and various structural aspects of a campaign (ex. Funding Goal, Team/Athlete) on the chances of succeeding in raising funds
-    <li> Secondly, to build a model that can predict the chances of success or failure with a high accuracy and performance. This can help us understand the dynamics of the sports crowdfunding market. 
+    <li> Firstly, to understand the effects of various linguistic aspects (ex. Narcissism, Sentiments) and various structural aspects of a campaign (ex. Funding Goal, Team/Athlete) on the chances of succeeding in raising funds. This can help us support campaign creators in building better campaigns. This 
+    <li> Secondly, to build a model that can predict the chances of success or failure with a high accuracy and performance. This can help us understand the dynamics of the campaigns on the platform and identify potential good campaigns early on and promote them.
 </ul>
 <br>
 
+We chose 3 primary modeling approaches that would enable us in achieving our two goals:
+| Modeling Technique | Business Purpose | Comments | Assumptions |
+|:---|:---|:---:|:---|
+| Logistic Regression | Business Understanding | Logistic Regression allows us to learn the significance of effects of each of the independent variables (linguistic and structural aspects of campaigns) and help us build rules accordingly | The model assumes that the independent variables are normally distributed and independent, missing data is dropped from analysis |
+| Decision Tree | Business Understanding | Decision tree allows us to build rules that directly associate with the success or failure of a campaign | The model does not assume any distributions on the independent variables. The model can take care of missing data itself |
+| Neural Networks | Business Understanding | Logistic Regression allows us to learn the significance of effects of each of the independent variables (linguistic and structural aspects of campaigns) and help us build rules accordingly | The model does not assume any distributions on the independent variables |
 
 
-## Build the Models
+## Model Building
+
+### Logistic Regression using R
+
+**Tranforming the variables** <br>
+
+* The categorical variables were converted into factor variables
+
+```R
+# Converting categorical variables into factor variables
+train_df$Success <- as.factor(train_df$Success)
+train_df$TeamOrAthlete <- as.factor(train_df$TeamOrAthlete)
+test_df$Success <- as.factor(test_df$Success)
+test_df$TeamOrAthlete <- as.factor(test_df$TeamOrAthlete)
+
+```
+
+* The numerical variables were transformed using log transform because of their heavy skew. In order to accommodate records with 0, we added 1 when doing a log transform.
+```R
+# Transforming numerical variables to adjust for skewness
+# numSupporters, Wordcount, NarcissismFactor, joy, sadness, negative, positive
+# fear, trust, FundingGoalAdjusted
+# adding 1 so that zero values are not affected 
+train_df$lognumSupporters <- log10(train_df$numSupporters + 1)
+train_df$logWordcount <- log10(train_df$Wordcount + 1)
+train_df$logNarcissismFactor <- log10(train_df$NarcissismFactor + 1)
+train_df$logJoy <- log(train_df$joy + 1)
+train_df$logSadness <- log(train_df$sadness + 1)
+train_df$logNegative <- log(train_df$negative + 1)
+train_df$logPositive <- log(train_df$positive + 1)
+train_df$logFear <- log(train_df$fear + 1)
+train_df$logTrust <- log(train_df$trust + 1)
+train_df$logFundingGoalAdjusted <- log10(train_df$FundingGoalAdjusted + 1)
+
+test_df$lognumSupporters <- log10(test_df$numSupporters + 1)
+test_df$logWordcount <- log10(test_df$Wordcount + 1)
+test_df$logNarcissismFactor <- log10(test_df$NarcissismFactor + 1)
+test_df$logJoy <- log(test_df$joy + 1)
+test_df$logSadness <- log(test_df$sadness + 1)
+test_df$logNegative <- log(test_df$negative + 1)
+test_df$logPositive <- log(test_df$positive + 1)
+test_df$logFear <- log(test_df$fear + 1)
+test_df$logTrust <- log(test_df$trust + 1)
+test_df$logFundingGoalAdjusted <- log10(test_df$FundingGoalAdjusted + 1)
+```
+
+**Testing Assumptions**
+
+* We looked at the histograms and QQ-plots of each of the numerical variables to see the effects of transformation and the closeness to normal distribution, because the normality assumption is needed for logistic regression
+
+Funding Goal:
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/fundinggoal_transformation.png">
+</p>
+
+<p align="center">
+    <img width="780" height = "400" src="/assets/Visualizations/parameter_estimation/fundinggoalQQplot.png">
+</p>
+
+NumSupporters: 
+
+Wordcount:
+
+NarcissismFactor:
+
+
+Joy:
+
+Sadness:
+
+Positive:
+
+Negative:
+
+Trust:
+
+Fear:
+
+
+
+**Model Evaluation**
+
+**Final Model**
+
+**Results and Interpretation**
+
 
 ## Assess the Models
 
