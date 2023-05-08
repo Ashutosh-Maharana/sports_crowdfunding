@@ -1815,7 +1815,6 @@ plt.title("Performance of various NN models on Test Accuracy")
 for i in range(len(accuracy_models)):
     plt.text(accuracy_models[i], model_list[i], round(accuracy_models[i],3))
 plt.show()
-
 ```
 ![acc-nn](/assets/Visualizations/classification_NeuralNets/accuracy.png)
 
@@ -1835,7 +1834,9 @@ plt.show()
 
 ![sen-nn](assets/Visualizations/classification_NeuralNets/sensitivity.png)
 
-## Final Modeling results
+## Conclusion and Discussion
+
+**Final Model Results**
 
 The neural network performs the best and can serve as a good predictive machine for sports crowdfunding outcomes 
 
@@ -1846,15 +1847,32 @@ The neural network performs the best and can serve as a good predictive machine 
 | Unpruned decision tree | 0.5764 | Unpruned decision tree is not useful because of the large number of rules which are complex and hard to understand. Lower AUC than the logistic regression |
 | Optimal decision tree (12 nodes) | 0.5227 | As expected the AUC of the decision tree drops after pruning (optimizing for cost complexity) |
 
-## Conclusion and Discussion
+**Dataset Uniqueness**
 
-* In gathering the data, some of the key issues we faced were:
-1. The location of the metadata might change for each campaign on the home page. This lack of definitely structure meant that we had to scrape raw data without any clear identifiers and use heavy data transformation methods to arrive at the final data
-2. The individual campaign pages had different structures, so for some pages, we had to finetune our scraping code, therefore needing a lot of "try and except" blocks
-
-* Some of the unique pros of our dataset are:
+Some of the unique pros of our dataset are:
 1. This is a scraped dataset unlike existing scraped dataset. Ours is unique and probably one of the only datasets in sports crowdfunding
 2. Our dataset contains data on language use, particularly, the stories of the campaigns which is rich in the emotions, personality, attitudes of the crowdfunding entrepreneurs
 3. The dataset has data on 1143 campaigns, and of those 921 campaigns of text data, which is a large enough sample for good statistical work
+4. Our stratified sampling approach ensured that the train-test datasets shared similar variable distributions preserving the key properties of the dataset
 
-* Based on our research findings, we would like to propose the effects of the structure of sport crowdfunding campaigns, their sports type, the language use have on the outcome of the project. This has practical implications for individuals and small businesses aiming to support their goals through crowdfunding. Our next modelling exercise will leverage tools such as sentiment analysis, topic modeling etc. to realise the value of our work for academicians and entrepreneurs.
+**Business Understanding Conclusions**
+
+1. Across all models, we observe that lower funding goals are better for sports crowdfunding campaigns as they improve the chances of success
+2. We also observe that the sentiments relevant to trust and negative words are more relevant and that audience is likely to donate more to trustworthy campaigns and campaigns that talk about the difficulty of their journey
+3. Narcissism has an effect on sports crowdfunding campaigns and their chances of success. Less narcissistic the campaign descriptions are, more likely they are to succeed.
+4. The other sentiments do not play much role in the audience evaluations of the crowdfunding campaigns
+5. Our models are useful for teams, athletes, and entrepreneurs in the sports crowdfunding market
+
+**Predicting Success**
+
+1. Our MLP models perform very well even with high class imbalance with the best performing model exhibiting a 97% accuracy and 0.842 AUC score
+2. Our model can be used by entrepreneurs in the sports crowdfunding platform to study the effects of various structural and linguistic aspects 
+
+
+**Limitations and Future Research**
+
+1. Future research can look at leveraging Large Language Models to use the text of the campaign descriptions towards the crowfunding outcome classification task
+2. Future research can also look at identifying more campaigns from different platforms and compare how the sports crowdfunding outcomes differ with platforms
+3. We only looked at campaigns with english language as the native language. Future research can look at campaigns which are in other languages 
+
+
