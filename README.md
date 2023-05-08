@@ -929,7 +929,32 @@ for topic_num in topic_num_list:
     <img width="500" src="/assets/Visualizations/topic_modeling/coherence_score.png">
 </p>
 
+* Based on the _u-mass_ score we find that the optimal number of topics is 8
 
+**Topic Model Results**
+
+* We build the topic model for the number of topics = 8
+```Python
+# Make a index to word dictionary.
+temp = dictionary[0]  # only to "load" the dictionary.
+id2word = dictionary.id2token
+
+# Build LDA model
+lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
+                                        id2word=id2word,
+                                        num_topics=8, 
+                                       random_state=123,
+                                    #    update_every=1,
+                                    #    chunksize=100,
+                                        passes=5,
+                                        alpha='auto',
+                                        per_word_topics=True)
+```
+
+* The final topics are as below:
+<p align="center">
+    <img width="700" height="400" src="/assets/Visualizations/topic_modeling/final/topics_keywords.png">
+</p>
 
 ## Sentiment Analysis Classification
 
