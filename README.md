@@ -849,8 +849,9 @@ Checking the Distribution of Trust and Fear
 </p>
 
 
+
 ## Named Entity Recognition  
-Entities were extracted from the English language sports stories using the spaCy library. The stories were filtered for English language and named entity recognition was performed using “spaCy”. The entities were classified into ten categories - PERSON, ORG, PRODUCT, EVENT, MONEY, DATE, TIME, LOC, and NORP. Some of the story descriptions from which which named entiriesw ere extracted are as below:  
+Entities were extracted from the English language sports stories using the spaCy library. The stories were filtered for English language and named entity recognition was performed using “spaCy”. 
 <p align="center">
     <img width="1200" src="assets/Visualizations/named_entity_recognition/sample2.png">
 </p>
@@ -859,7 +860,15 @@ Entities were extracted from the English language sports stories using the spaCy
     <img width="1200" src="assets/Visualizations/named_entity_recognition/sample3.png">
 </p>  
 
-For each story, the identified entities were stored in separate columns in the dataframe. The dataframe was filtered to include only relevant columns such as CampaignURL, SportName, City, State, Country, TeamOrAthlete, language, and the columns for each entity type.
+### Text Preprocessing  
+Since the combinned text length of Story description exceeded the maximum length allowed by spaCy's NER model, the nlp.max_length limit was increased to 2 million characters to allow for larger input texts.
+```Python
+nlp.max_length = 2000000
+doc = nlp(combined_text)
+```
+Spacy library was utilized to perform lemmatization and stopword removal on text data in order to create a dictionary of entities and their respective counts. The nlp() function from Spacy was used to process each entity by converting it to lowercase, removing stopwords (common words like "the", "and", "a", etc.), and lemmatizing each word in the entity.
+
+The entities were classified into 9 categories - PERSON, ORG, PRODUCT, EVENT, MONEY, DATE, TIME, LOC, and NORP. For each story, the identified entities were stored in separate columns in the dataframe. The dataframe was filtered to include only relevant columns such as CampaignURL, SportName, City, State, Country, TeamOrAthlete, language, and the columns for each entity type.
 
 ```Python
 	for i, story in english_df['Story_Original'].iteritems():
@@ -915,7 +924,7 @@ Captures Countries, cities, states along with Non-GPE locations. provides inform
 Captures Nationalities and ethnicities of groups related to sports/campaign.  
 
 
-
+Below is a snapshot of the dataframe with extracted entities for each story.
 <p align="center">
     <img width="1200" src="assets/Visualizations/named_entity_recognition/ner_dataframe.png">
 </p>
@@ -926,13 +935,72 @@ Both successful and unsuccessful stories have almost same distribution of mentio
     <img width="600" src="assets/Visualizations/named_entity_recognition/graph.png">
 </p>
 
-Since the combinned text length of Story description exceeded the maximum length allowed by spaCy's NER model, the nlp.max_length limit was increased to 2 million characters to allow for larger input texts. 
 
-I have added the stop words from the spacy language model and then used the is_stop attribute to remove them. I have also used lemmatization to convert the words to their base form to reduce the number of unique words.
+To Analyze further, top 5 entities each type of entoty was extracted from the combined text of all story descriptions. The large English NLP model was loaded using Spacy library, and custom stop words were added to improve the accuracy of the Named Entity Recognition (NER) process. The custom stop words list included common words such as "said," "told," "like," and "just." Then, the "Story_Original" column in the input data was combined into a single string, and NER was performed on the resulting text using the loaded NLP model. The resulting document was stored in a variable called "doc."
+
+```Python
+# %%
+# Iterating over the entities in the document and add them to the corresponding entity dictionary
+for ent in doc.ents:
+    if ent.label_ in entity_dict:
+        if ent.text in entity_dict[ent.label_]:
+            entity_dict[ent.label_][ent.text] += 1
+        else:
+            entity_dict[ent.label_][ent.text] = 1
+# %%
+
+# Removing stopwords and lemmatize the words
+for key in entity_dict.keys():
+    new_dict = {}
+    for entity, count in entity_dict[key].items():
+        entity = ' '.join([word.lemma_ for word in nlp(entity.lower()) if not word.is_stop])
+        if entity in new_dict:
+            new_dict[entity] += count
+        else:
+            new_dict[entity] = count
+    entity_dict[key] = new_dict
+
+# %% 
+# Printing the top 5 entities for each entity type
+for entity_type in entity_dict:
+    print(entity_type)
+    sorted_entities = sorted(entity_dict[entity_type], key=entity_dict[entity_type].get, reverse=True)[:5]
+    for entity in sorted_entities:
+        print(f"{entity}: {entity_dict[entity_type][entity]}")
+    print()
+
+# %%
+```
 
 
+Subsequently, a dictionary called "entity_dict" was created with keys representing the various entity types such as PERSON, ORG, PRODUCT, EVENT, MONEY, DATE, TIME, LOC, and NORP. The NER process was iterated over the document, and for each entity found, its type and frequency were added to the corresponding dictionary in "entity_dict." The top five entities for each entity type were then printed. Top 5 entities from each entity type along with their count can be found below.
 
-In conclusion, the above code and its result showcase the power of NLP techniques in extracting valuable insights from large datasets of text data. The use of custom stop words and categorization of entities into different types helps in cleaning the data and making it more interpretable. The resulting dictionaries can be used for various applications such as topic modeling, sentiment analysis, and trend analysis in the spor industry.
+<center>
+  <table>
+    <tr>
+      <td><img src="assets/Visualizations/named_entity_recognition/person.png" width="200"></td>
+      <td><img src="assets/Visualizations/named_entity_recognition/org.png" width="300"></td>
+      <td><img src="assets/Visualizations/named_entity_recognition/event.png" width="300"></td>
+    </tr>
+    <tr>
+      <td><img src="assets/Visualizations/named_entity_recognition/loc.png" width="200"></td>
+      <td><img src="assets/Visualizations/named_entity_recognition/norp.png" width="200"></td>
+    <td><img src="assets/Visualizations/named_entity_recognition/product.png" width="300"></td>
+    </tr>
+    <tr>
+    <td><img src="assets/Visualizations/named_entity_recognition/time.png" width="200"></td>
+     <td><img src="assets/Visualizations/named_entity_recognition/date.png" width="200"></td>
+      <td><img src="assets/Visualizations/named_entity_recognition/money.png" width="300"></td>
+    </tr>
+
+  </table>
+</center>
+
+British boxer Gary Corcoran and Australian Boxer Jeff Horn we the top 2 person mentioned in the descriptions. Among the organizations National Development Center and NLA were the top organizations mentioned.Most of the campagins were related to sports events such as Olympic, National Championship, World Cup and World championships.
+
+Europe, Africa, North America, Thunder Bay and Asia were the top locations that were mentioned in the combined text implicating that these are the places in which most sport crowdfunding is happening.Canadians, Europians, Americans , South Africans and Nigerican athletes were the most mentioned in the story descriptions.
+
+
 
 
 
