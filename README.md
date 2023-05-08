@@ -741,11 +741,46 @@ Here are top words and the word cloud of words that are associated with Joy-Sadn
     <img width="800" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
 </p>
 
-An example of word cloud for Joy sentiment:
+Below are the word clouds for all sentiment:
 
-<p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/Cloud_Joy.png">
-</p>
+<center>
+  <table>
+  <tr>
+    <td align = 'center'>Joy</td>
+    <td align = 'center'>Sadness</td>
+    </tr>
+    <tr>
+      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Joy.png" width="500"></td>
+      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Sadness.png" width="500"></td>
+    </tr>
+    </table>
+</center>
+<center>
+  <table>
+<tr>
+    <td align = 'center'>Positive</td>
+    <td align = 'center'>Negetive</td>
+    </tr>
+    <tr>
+      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Positive.png" width="500"></td>
+      <td><img src="assets/Visualizations/sentiment_analysis/CLoud_Negative.png" width="500"></td>
+    </tr>
+    </table>
+</center>
+<center>
+  <table>
+<tr>
+    <td align = 'center'>Trust</td>
+    <td align = 'center'>Fear</td>
+    </tr>
+    <tr>
+    <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Trust.png" width="500"></td>
+    <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Fear.png" width="500"></td>
+    </tr>
+  </table>
+</center>
+
+
 
 In addition to identifying the top words associated to a sentiment, we also looked at individual stories that have a high score for a particular sentiment to understand how the words align with what people actually say.
 	
