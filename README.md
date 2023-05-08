@@ -74,14 +74,20 @@ So, for each campaign some data was scraped from main page of website and furthe
 Key Files - Codes, Datasets
 ---
 Codes
-* [main.py](/code/main.py) is the Python file used to scrape the data from main page of the website https://sportfunder.com
-* [campaign.py](/code/campaign.py) is the Python file used to scrape more details of each campaign after going into individual campaign pages
-* [data_cleaning.py](/code/data_cleaning.py) is the Python file used for cleaning and transformation of scraped data and analysis of missing values
-* [exploratory_data_analysis.py](/code/exploratory_data_analysis.py) is the Python file used for generating visualizations and analyzing final data
-* [narcissism.py](/code/narcissism.py) is the Python file used for cleaning the text of the campaign stories and generating the raw word count scores for narcissism dimensions
-* [data_consolidation.py](/code/data_consolidation.py) is the Python file used for merging multiple dataframes, dropping columns with missing values, generating final narcissism word counts
-* [factor_analys.R](/code/factor_analysis.R) is the R file used for data reduction - factor analysis of narcissism word counts
-
+* [main.py](/code/data_scraping/main.py) is the Python file used to scrape the data from main page of the website https://sportfunder.com
+* [campaign.py](/code/data_scraping/campaign.py) is the Python file used to scrape more details of each campaign after going into individual campaign pages
+* [data_cleaning.py](code/data_cleaning/data_cleaning.py) is the Python file used for cleaning and transformation of scraped data and analysis of missing values
+* [exploratory_data_analysis.py](/code/deliverable_1_analysis/exploratory_data_analysis.py) is the Python file used for generating visualizations and analyzing final data
+* [narcissism.py](/code/deliverable_1_analysis/narcissism.py) is the Python file used for cleaning the text of the campaign stories and generating the raw word count scores for narcissism dimensions
+* [data_consolidation.py](/code/data_cleaning/data_consolidation.py) is the Python file used for merging multiple dataframes, dropping columns with missing values, generating final narcissism word counts
+* [factor_analys.R](/code/deliverable_1_analysis/factor_analysis.R) is the R file used for data reduction - factor analysis of narcissism word counts
+* [text_analysis.R](/code/text_analysis/text_analysis.R)is the R file used for sentiment analysis - creates new datasets with sentiment-specific word counts. 
+* [sentiment_analysis.R](/code/text_analysis/sentiment_analysis.R)is the R file used for sentiment classification
+* [topic_modeling.py](/code/text_analysis/topic_modeling.py)is the Python file used for topic modelling - built LDA model to identify topics and generated visualizations for topics
+* [named_entity_recognition.py](/code/text_analysis/named_entity_recognition.py)is the R file used for named entity recognition where entities were extracted for every story
+* [data_sampling.R](/code/data_analysis/data_sampling.R)is the R file used for performing Stratified sampling and generate train, test datasets
+* [classification_analysis.py](/code/data_analysis/classification_analysis.py)is the Python file used to build neural network models for different combinations of activation functions and hidden layers
+* [parameter_estimation.R](/code/data_analysis/parameter_estimation.R)is the R file used to build and assess the assumptions of logistic regression, decision tree models
 
 ---
 Data tables and Data dictionary
@@ -93,7 +99,12 @@ Raw data (uncleaned)
 * [final_data_merged.csv](/data/clean_data/final_data_merged.csv) contains merged data from the two main raw data files - main and campaigns
 * [final_data_merged_storycleaned.csv](/data/clean_data/final_data_merged_storycleaned.csv.csv) contains the cleaned story texts - removing noise, special characters, alphanumeric phrases etc.
 * [final_data_merged_storycleaned_wordcounts.csv](/data/clean_data/final_data_merged_storycleaned_wordcounts.csv) contains the data coming from the narcissism.py as well as the original data - the wordcounts across each narcissism dimensions
-* [final_dataset_analysis.csv](/data/clean_data/final_dataset_analysis.csv) is the final dataset with multiple columns dropped as per the % of missing values, 
+* [final_dataset_analysis.csv](/data/clean_data/final_dataset_analysis.csv) is the final dataset with multiple columns dropped as per the % of missing values
+* [final_dataset_textanalysis.csv](/data/clean_data/final_dataset_textanalysis.csv) is an extension of [final_dataset_analysis.csv](/data/clean_data/final_dataset_analysis.csv) that includes an additional field indicating the language of the "story_original" variable
+* [final_dataset_textanalysis_sentiment_score_updated.csv](/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv) contains sentiment scores for the selected sentiment pairs
+* [raw_dataset_withsentimentscores_withouterrors.csv](/data/data_analysis/raw_dataset_withsentimentscores_withouterrors.csv) is the dataset(with sentiment scores) obtained after correcting datapoints that were not scraped appropriately
+* [final_data_train.csv](/data/data_analysis/final_data_train.csv) is the final train dataset used for modelling
+* [final_data_test.csv](/data/data_analysis/final_data_test.csv) is the final test dataset used for modelling
 
 ---
 
