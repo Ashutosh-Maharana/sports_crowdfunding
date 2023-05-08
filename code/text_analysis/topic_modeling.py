@@ -141,7 +141,7 @@ id2word = dictionary.id2token
 # Build LDA model
 lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
                                         id2word=id2word,
-                                        num_topics=17, 
+                                        num_topics=8, 
                                        random_state=123,
                                     #    update_every=1,
                                     #    chunksize=100,
@@ -149,7 +149,7 @@ lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
                                         alpha='auto',
                                         per_word_topics=True)
 
-# Print the Keyword in the 17 topics
+# Print the Keyword in the 8 topics
 print(lda_model.print_topics())
 
 #%%
