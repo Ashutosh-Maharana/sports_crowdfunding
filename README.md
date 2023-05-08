@@ -732,7 +732,7 @@ After applying the function, we created a new binary variable named is_english a
     df['language'] = df['Story_Original'].apply(detect_language)
 
 
-Dataset , dictionary merge process and developing new datasets and merging with original file -- Need to add this
+In the text analysis phase, we began by cleaning and preprocessing the raw text data. This involved removing stop words and stemming the remaining words to prepare the text for analysis. We then performed sentiment analysis on the text, specifically evaluating the joy and sadness, trust and fear, and positive and negative sentiments. The resulting dataset contained the sentiment scores for each word in the text, allowing us to further analyze and interpret the emotional tone of the stories.
 
 After we arrived at our dataset consisting of words tagged to each sentiment, we looked at the most frequently used words corresponding to each of those sentiments. 
 Here are top words and the word cloud of words that are associated with Joy-Sadness, Positive-Negative, Trust-Fear sentiment pairs:
@@ -741,6 +741,7 @@ Here are top words and the word cloud of words that are associated with Joy-Sadn
     <img width="800" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
 </p>
 
+<<<<<<< HEAD
 Below are the word clouds for all sentiment:
 
 <center>
@@ -780,6 +781,9 @@ Below are the word clouds for all sentiment:
   </table>
 </center>
 
+=======
+Word clouds for sentiment pairs:
+>>>>>>> fdc06026ff132f9dee2935eb1ecf6471032fedcf
 
 
 In addition to identifying the top words associated to a sentiment, we also looked at individual stories that have a high score for a particular sentiment to understand how the words align with what people actually say.
@@ -818,6 +822,10 @@ Copying the new labels to new CSV file
 	#%%
 	df.to_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv', index=False)
 ```
+
+The above code adds three new columns ('joy_sad', 'pos_neg', and 'trust_fear') to a DataFrame. Each column's value is determined based on comparisons between specific columns in the DataFrame. The code then outputs the values of the 'joy_sad', 'pos_neg', and 'trust_fear' columns. Finally, it saves the updated DataFrame to a CSV file.
+
+
 Checking the Distribution of Joy and Sad 
 
 ```Python
@@ -900,6 +908,8 @@ Checking the Distribution of Trust and Fear
 
 **Handling Class Imbalance**
 
+Based on the visualizations shown above, it is evident that there is a significant imbalance between the different classes in the data. In order to address this imbalance, we are employing a technique called SMOTE (Synthetic Minority Over-sampling Technique).
+
 SMOTE (Synthetic Minority Over-sampling Technique) is a technique used to handle class imbalance in machine learning. It creates synthetic samples of the minority class by selecting some of the minority class observations and creating new observations that are linear combinations of the original minority observations.
 
 By using SMOTE, synthetic samples were generated for the minority class ('fear','negative','sad'), resulting in a balanced dataset that can be used to train the sentiment analysis model.
@@ -944,11 +954,16 @@ from sklearn.metrics import plot_confusion_matrix
 plot_confusion_matrix(text_classifier, X_test, y_test)
 
 ```
+
+The code performs text classification using a Random Forest Classifier. It starts by extracting input features and labels from a DataFrame. Then, it defines stop words and vectorizes the input features using TF-IDF vectorization. To handle class imbalance, it applies SMOTE (Synthetic Minority Over-sampling Technique) to balance the dataset. The data is split into training and testing sets, and a Random Forest Classifier is trained on the training data. Predictions are made on the test data, and the performance of the model is evaluated using a confusion matrix, classification report, and accuracy score. 
+
 Joy and Sadness Confusion Matrix and Classification Report
 
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Joy_Sad.png">
 </p>
+
+The classification model achieved an overall accuracy of 99% in predicting emotions. It demonstrated high precision, recall, and F1-score for both the "joy" and "sadness" classes, indicating that the model successfully identified instances belonging to these classes. The confusion matrix shows that there were only a few misclassifications, with three instances each being incorrectly classified as "joy" and "sadness" respectively. Overall, the model performed exceptionally well in accurately predicting emotions.
 
 Postive and Negative Confusion Matrix and Classification Report
 
@@ -956,12 +971,16 @@ Postive and Negative Confusion Matrix and Classification Report
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Pos_Neg.png">
 </p>
 
+The classification model achieved an overall accuracy of 99% in predicting sentiment (negative or positive). It showed high precision, recall, and F1-score for both the "negative" and "positive" classes, indicating accurate identification of instances belonging to these classes. The confusion matrix reveals that there were only a few misclassifications, with five instances incorrectly classified as "negative" and one instance incorrectly classified as "positive." Overall, the model performed exceptionally well in accurately predicting sentiment, with minimal errors
+
 Trust and Fear Confusion Matrix and Classification Report
 
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Trust_Fear.png">
 </p>
 
+
+The classification model achieved a high accuracy of 99% in predicting emotions. It demonstrated excellent precision, recall, and F1-score for both the "fear" and "trust" classes, indicating accurate identification of instances belonging to these classes. The confusion matrix shows that there were only a few misclassifications, with three instances incorrectly classified as "fear" and none as "trust." Overall, the model performed exceptionally well in accurately predicting emotions, with minimal errors.
 
 ## Named Entity Recognition  
 Entities were extracted from the English language sports stories using the spaCy library. The stories were filtered for English language and named entity recognition was performed using “spaCy”. 
@@ -1114,9 +1133,6 @@ British boxer Gary Corcoran and Australian Boxer Jeff Horn we the top 2 person m
 Europe, Africa, North America, Thunder Bay and Asia were the top locations that were mentioned in the combined text implicating that these are the places in which most sport crowdfunding is happening.Canadians, Europians, Americans , South Africans and Nigerican athletes were the most mentioned in the story descriptions.
 
 
-
-
-
 ## Data Splitting and Sub-Sampling 
 
 * Our final sample size with complete data for analysis has 792 records. This being a relatively small sample for analysis, we chose to go ahead with a 80-20 split for train-test.
@@ -1220,7 +1236,7 @@ We chose 3 primary modeling approaches that would enable us in achieving our two
 |:---|:---|:---|:---|
 | Logistic Regression | Business Understanding | Logistic Regression allows us to learn the significance of effects of each of the independent variables (linguistic and structural aspects of campaigns) and help us build rules accordingly | The model assumes that the independent variables are normally distributed and independent, missing data is dropped from analysis |
 | Decision Tree | Business Understanding | Decision tree allows us to build rules that directly associate with the success or failure of a campaign | The model does not assume any distributions on the independent variables. The model can take care of missing data itself |
-| Neural Networks | Business Understanding | Neural Networks act as black-boxes but have very high capability to model non-linear relationships in the data and can provide high predictive power | The model does not assume any distributions on the independent variables |
+| Neural Networks | Classification/Prediction | Neural Networks act as black-boxes but have very high capability to model non-linear relationships in the data and can provide high predictive power | The model does not assume any distributions on the independent variables |
 
 
 ## Model Building for Business Understanding
