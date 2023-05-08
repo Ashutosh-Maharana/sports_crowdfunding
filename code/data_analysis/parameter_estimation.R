@@ -177,7 +177,7 @@ vif(logreg1)
 
 Anova(logreg1)
 
-# Calculating AUC
+# Calculating AUC of logistic regression model
 predicted <- predict(logreg1, test_df, type = "response")
 auc(test_df$Success, predicted)
 

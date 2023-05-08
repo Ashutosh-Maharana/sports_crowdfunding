@@ -805,7 +805,14 @@ Following bar charts show the percentage of sentiment scores for different sport
     <img width="500" src="/assets/Visualizations/sentiment_analysis/JoyPercCountry.png">
 </p>
 
-**Sentiment Analysis Classification**
+
+## Topic Modeling
+
+We leveraged _spacy_ and _gensim_ libraries for our topic modeling. _gensim_ offers very good methods to conduct topic modeling and identify the optimal number of topics
+
+
+
+## Sentiment Analysis Classification
 
 Copying the new labels to new CSV file
 
@@ -957,7 +964,7 @@ plot_confusion_matrix(text_classifier, X_test, y_test)
 
 The code performs text classification using a Random Forest Classifier. It starts by extracting input features and labels from a DataFrame. Then, it defines stop words and vectorizes the input features using TF-IDF vectorization. To handle class imbalance, it applies SMOTE (Synthetic Minority Over-sampling Technique) to balance the dataset. The data is split into training and testing sets, and a Random Forest Classifier is trained on the training data. Predictions are made on the test data, and the performance of the model is evaluated using a confusion matrix, classification report, and accuracy score. 
 
-Joy and Sadness Confusion Matrix and Classification Report
+**Joy and Sadness Confusion Matrix and Classification Report**
 
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Joy_Sad.png">
@@ -965,7 +972,7 @@ Joy and Sadness Confusion Matrix and Classification Report
 
 The classification model achieved an overall accuracy of 99% in predicting emotions. It demonstrated high precision, recall, and F1-score for both the "joy" and "sadness" classes, indicating that the model successfully identified instances belonging to these classes. The confusion matrix shows that there were only a few misclassifications, with three instances each being incorrectly classified as "joy" and "sadness" respectively. Overall, the model performed exceptionally well in accurately predicting emotions.
 
-Postive and Negative Confusion Matrix and Classification Report
+**Postive and Negative Confusion Matrix and Classification Report**
 
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Pos_Neg.png">
@@ -973,7 +980,7 @@ Postive and Negative Confusion Matrix and Classification Report
 
 The classification model achieved an overall accuracy of 99% in predicting sentiment (negative or positive). It showed high precision, recall, and F1-score for both the "negative" and "positive" classes, indicating accurate identification of instances belonging to these classes. The confusion matrix reveals that there were only a few misclassifications, with five instances incorrectly classified as "negative" and one instance incorrectly classified as "positive." Overall, the model performed exceptionally well in accurately predicting sentiment, with minimal errors
 
-Trust and Fear Confusion Matrix and Classification Report
+**Trust and Fear Confusion Matrix and Classification Report**
 
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Trust_Fear.png">
