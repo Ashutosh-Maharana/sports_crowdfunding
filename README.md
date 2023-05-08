@@ -732,7 +732,7 @@ After applying the function, we created a new binary variable named is_english a
     df['language'] = df['Story_Original'].apply(detect_language)
 
 
-Dataset , dictionary merge process and developing new datasets and merging with original file -- Need to add this
+In the text analysis phase, we began by cleaning and preprocessing the raw text data. This involved removing stop words and stemming the remaining words to prepare the text for analysis. We then performed sentiment analysis on the text, specifically evaluating the joy and sadness, trust and fear, and positive and negative sentiments. The resulting dataset contained the sentiment scores for each word in the text, allowing us to further analyze and interpret the emotional tone of the stories.
 
 After we arrived at our dataset consisting of words tagged to each sentiment, we looked at the most frequently used words corresponding to each of those sentiments. 
 Here are top words and the word cloud of words that are associated with Joy-Sadness, Positive-Negative, Trust-Fear sentiment pairs:
@@ -741,7 +741,7 @@ Here are top words and the word cloud of words that are associated with Joy-Sadn
     <img width="800" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
 </p>
 
-An example of word cloud for Joy sentiment:
+Word clouds for sentiment pairs:
 
 <p align="center">
     <img width="800" src="/assets/Visualizations/sentiment_analysis/Cloud_Joy.png">
