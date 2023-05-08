@@ -1451,7 +1451,7 @@ The significant rules are:
 * We observed that there are 3 significant rules that pertained to the Success: particularly, we observe that lower funding goals, lower narcissistic content, lower Joy sentiment and lower Fear sentiment are associated with success.
 * This correlates well with the results of the logistic regression model.
 
-## Model Assessment
+### Model Assessment
 
 **Comparison of Logistic Regression and Decision Tree**
 
@@ -1554,8 +1554,71 @@ for af in activation_funcs:
 
 **Performance Evaluation**
 
+* When we look at the AUC scores of various models, we observe three key insights: <br>
+<ul>
+    <li> As the complexity of the neural network increases, generally the AUC drops. The larger networks with more hidden layers and more hidden units perform worse than smaller neural networks. This is probably due to the low number of features, low correlations within the dataset and the small sample size
+    <li> The logistic activation function performs worse than both ReLU and tanh activation functions. Overall, ReLU activation function performs the best
+    <li> The MLP models are in general better performing than both logistic regression and decision tree models
+</ul>
 
+The best model as per the AUC is the MLP Classifier with ReLU activation function and 1 hidden layer with 100 neural units and has an AUC of 0.842
 
+```Python
+# Plotting the AUC scores
+fig = plt.figure(figsize=(15,20))
+plt.plot(auc_score_models, model_list)
+plt.xlabel("AUC Score")
+plt.ylabel("Model activation function and hidden layer sizes")
+plt.title("Performance of various NN models on AUC Score")
+for i in range(len(auc_score_models)):
+    plt.text(auc_score_models[i], model_list[i], round(auc_score_models[i],3))
+plt.show()
+```
+
+![auc-nn](/assets/Visualizations/classification_NeuralNets/auc_scores.png)
+
+* Accuracy is fairly high across all models:
+
+```Python
+# Plotting the accuracy scores
+fig = plt.figure(figsize=(15,20))
+plt.plot(accuracy_models, model_list)
+plt.xlabel("Accuracy")
+plt.ylabel("Model activation function and hidden layer sizes")
+plt.title("Performance of various NN models on Test Accuracy")
+for i in range(len(accuracy_models)):
+    plt.text(accuracy_models[i], model_list[i], round(accuracy_models[i],3))
+plt.show()
+
+```
+![acc-nn](/assets/Visualizations/classification_NeuralNets/accuracy.png)
+
+* The best performing model on AUC is also the best performing model 
+
+```Python
+# Plotting the sensitivity scores
+fig = plt.figure(figsize=(15,20))
+plt.plot(sensitivity_models, model_list)
+plt.xlabel("Sensitivity")
+plt.ylabel("Model activation function and hidden layer sizes")
+plt.title("Performance of various NN models on Test Sensitivty")
+for i in range(len(accuracy_models)):
+    plt.text(sensitivity_models[i], model_list[i], round(sensitivity_models[i],3))
+plt.show()
+```
+
+![sen-nn](assets/Visualizations/classification_NeuralNets/sensitivity.png)
+
+## Final Modeling results
+
+The neural network performs the best and can serve as a good predictive machine for sports crowdfunding outcomes 
+
+| Model | AUC | Comments | 
+|:---|:---|:---|
+| MLP - ReLU, (100,0) | 0.842 | Best model for predictive/classification purposes. The neural network model is not explainable and therefore not useful for business understanding purpose
+| Model 3 Logistic Regression | 0.6846 | Highest AUC among models with explainability. Therefore the best model for business understanding purposes | 
+| Unpruned decision tree | 0.5764 | Unpruned decision tree is not useful because of the large number of rules which are complex and hard to understand. Lower AUC than the logistic regression |
+| Optimal decision tree (12 nodes) | 0.5227 | As expected the AUC of the decision tree drops after pruning (optimizing for cost complexity) |
 
 ## Conclusion and Discussion
 
