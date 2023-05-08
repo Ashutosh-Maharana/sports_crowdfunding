@@ -169,7 +169,7 @@ entity_dict = {
     'NORP': {}
 }
 # %%
-# Iterate over the entities in the document and add them to the corresponding entity dictionary
+# Iterating over the entities in the document and add them to the corresponding entity dictionary
 for ent in doc.ents:
     if ent.label_ in entity_dict:
         if ent.text in entity_dict[ent.label_]:
@@ -178,7 +178,7 @@ for ent in doc.ents:
             entity_dict[ent.label_][ent.text] = 1
 # %%
 
-# Remove stopwords and lemmatize the words
+# Removing stopwords and lemmatize the words
 for key in entity_dict.keys():
     new_dict = {}
     for entity, count in entity_dict[key].items():
@@ -190,7 +190,7 @@ for key in entity_dict.keys():
     entity_dict[key] = new_dict
 
 # %% 
-# Print the top 5 entities for each entity type
+# Printing the top 5 entities for each entity type
 for entity_type in entity_dict:
     print(entity_type)
     sorted_entities = sorted(entity_dict[entity_type], key=entity_dict[entity_type].get, reverse=True)[:5]
