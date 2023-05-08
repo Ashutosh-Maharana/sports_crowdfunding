@@ -766,7 +766,14 @@ Following bar charts show the percentage of sentiment scores for different sport
     <img width="500" src="/assets/Visualizations/sentiment_analysis/JoyPercCountry.png">
 </p>
 
-**Sentiment Analysis Classification**
+
+## Topic Modeling
+
+We leveraged _spacy_ and _gensim_ libraries for our topic modeling. _gensim_ offers very good methods to conduct topic modeling and identify the optimal number of topics
+
+
+
+## Sentiment Analysis Classification
 
 Copying the new labels to new CSV file
 

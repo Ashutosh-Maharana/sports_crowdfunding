@@ -26,7 +26,7 @@ stop_words = stopwords.words('english')
 
 wd = os.getcwd()
 try:  
-    wd = wd.replace("/code", "")
+    wd = wd.replace("/code/text_analysis", "")
 except:
     pass
 
