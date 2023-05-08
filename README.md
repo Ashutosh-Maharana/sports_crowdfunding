@@ -691,7 +691,7 @@ from scipy.stats import binned_statistic
 os.getcwd()
 
 # Loading the dataframe Main Data
-main_data_df = pd.read_csv(r"/Users/satishwarkedas/Documents/GitHub/project-deliverable-2-invincible/data/clean_data/final_dataset_analysis.csv")
+main_data_df = pd.read_csv(r"/Users/satishwarkedas/Documents/GitHub/project-deliverable-2-invincible/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv")
 main_data_df = main_data_df.drop(['Unnamed: 0.1', 'Unnamed: 0'], axis=1)
 main_data_df.head()
     
@@ -797,6 +797,7 @@ Following bar charts show the percentage of sentiment scores for different sport
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/JoyPerc.png">
 </p>
+
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/JoyPercCountry.png">
 </p>
@@ -805,6 +806,128 @@ Following bar charts show the percentage of sentiment scores for different sport
 ## Topic Modeling
 
 We leveraged _spacy_ and _gensim_ libraries for our topic modeling. _gensim_ offers very good methods to conduct topic modeling and identify the optimal number of topics
+
+**Text Preprocessing**
+
+We took multiple steps in arriving at the final text data to be used for topic modeling:
+<ul>
+    <li> New line characters are removed from the text
+    <li> Distracting single quotes are removed from the text
+    <li> Stopwords are removed from the text
+    <li> Bigrams generated from the text data after removed
+    <li> Lemmatized text data but only retain nouns, verbs, adjectives and adverbs
+</ul>
+
+```Python
+#%%
+def sent_to_words(sentences):
+    for sentence in sentences:
+        yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))  # deacc=True removes punctuations
+
+# Initialize spacy 'en' model, keeping only tagger component (for efficiency)
+# python3 -m spacy download en
+nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
+
+def remove_stopwords(texts):
+    return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in texts]
+
+def make_bigrams(texts):
+    return [bigram_mod[doc] for doc in texts]
+
+def make_trigrams(texts):
+    return [trigram_mod[bigram_mod[doc]] for doc in texts]
+
+def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV', 'NUM', 'PRON']):
+    """https://spacy.io/api/annotation"""
+    texts_out = []
+    for sent in texts:
+        doc = nlp(" ".join(sent)) 
+        texts_out.append([token.lemma_ for token in doc if token.pos_ in allowed_postags])
+    return texts_out
+```
+
+```Python
+# Loading Data Frame from clean data folder
+
+df = pd.read_csv("{}/data/clean_data/final_dataset_textanalysis_sentiment_score.csv".format(os.getcwd()))
+df.head()
+# %%
+data = df['Story_Original'].values.tolist()
+# Remove new line characters
+data = [re.sub('\s+', ' ', str(sent)) for sent in data]
+# Remove distracting single quotes
+data = [re.sub("\'", "", str(sent)) for sent in data]
+data_words = list(sent_to_words(data))
+# Build the bigram and trigram models
+bigram = gensim.models.Phrases(data_words) # higher min_count or higher threshold fewer phrases.
+# Faster way to get a sentence clubbed as a trigram/bigram
+bigram_mod = gensim.models.phrases.Phraser(bigram)
+# Remove Stop Words
+data_words_nostops = remove_stopwords(data_words)
+# Form Bigrams
+data_words_bigrams = make_bigrams(data_words_nostops)
+# Do lemmatization keeping only noun, adj, vb, adv
+data_lemmatized = lemmatization(data_words_bigrams, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
+```
+
+**Building a corpus and dictionary for topic modeling**
+```Python
+# Create dictionary
+dictionary = corpora.Dictionary(data_lemmatized)
+dictionary.filter_extremes(no_below=10, no_above=0.2)
+
+# Create Corpus
+texts = data_lemmatized
+# # Term Document Frequency
+corpus = [dictionary.doc2bow(text) for text in texts]
+```
+
+**Identifying the optimal number of topics**
+
+* We first create a vector of number of topics and then for each number of topic we calculate the coherence score and store it in a list.
+* _u-mass_ coherence score is a metric which fluctuates around 0 and a value close to 0 is optimal. The number of topics where the _u-mass_ score is close to 0 is the optimal number of topics
+* We also set the random seed to 123 so that the topic models generate the same output for each run at each number of topics
+
+```Python
+# Testing the topic model for different number of topics
+# To identify the optimal number of topics
+# Using Perplexity and 'u_mass' Coherence score
+topic_num_list = range(5,21)
+perplexity_scores = []
+coherence_scores_umass = []
+
+# Make a index to word dictionary.
+temp = dictionary[0]  # only to "load" the dictionary.
+id2word = dictionary.id2token
+
+for topic_num in topic_num_list:
+    # Build LDA model
+    lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
+                                            id2word=id2word,
+                                            num_topics=topic_num, 
+                                            random_state=123,
+                                        #    update_every=1,
+                                        #    chunksize=100,
+                                            passes=5,
+                                            alpha='auto',
+                                            # per_word_topics=True
+                                            )    
+
+    # Compute Perplexity
+    # print('\n{}'.format(category))
+    perplexity_scores.append(lda_model.log_perplexity(corpus))
+    # print('\nPerplexity: ', lda_model.log_perplexity(corpus))  # a measure of how good the model is. lower the better.
+
+    # Compute Coherence Score u_mass
+    coherence_model_lda = CoherenceModel(model=lda_model, corpus=corpus, coherence='u_mass')
+    coherence_lda = coherence_model_lda.get_coherence()
+    coherence_scores_umass.append(coherence_lda)
+    print('\n u_mass Coherence Score: ', coherence_lda)
+```
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/topic_modeling/coherence_score.png">
+</p>
 
 
 
