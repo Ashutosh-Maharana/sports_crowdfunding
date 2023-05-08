@@ -1079,9 +1079,6 @@ British boxer Gary Corcoran and Australian Boxer Jeff Horn we the top 2 person m
 Europe, Africa, North America, Thunder Bay and Asia were the top locations that were mentioned in the combined text implicating that these are the places in which most sport crowdfunding is happening.Canadians, Europians, Americans , South Africans and Nigerican athletes were the most mentioned in the story descriptions.
 
 
-
-
-
 ## Data Splitting and Sub-Sampling 
 
 * Our final sample size with complete data for analysis has 792 records. This being a relatively small sample for analysis, we chose to go ahead with a 80-20 split for train-test.
@@ -1185,7 +1182,7 @@ We chose 3 primary modeling approaches that would enable us in achieving our two
 |:---|:---|:---|:---|
 | Logistic Regression | Business Understanding | Logistic Regression allows us to learn the significance of effects of each of the independent variables (linguistic and structural aspects of campaigns) and help us build rules accordingly | The model assumes that the independent variables are normally distributed and independent, missing data is dropped from analysis |
 | Decision Tree | Business Understanding | Decision tree allows us to build rules that directly associate with the success or failure of a campaign | The model does not assume any distributions on the independent variables. The model can take care of missing data itself |
-| Neural Networks | Business Understanding | Neural Networks act as black-boxes but have very high capability to model non-linear relationships in the data and can provide high predictive power | The model does not assume any distributions on the independent variables |
+| Neural Networks | Classification/Prediction | Neural Networks act as black-boxes but have very high capability to model non-linear relationships in the data and can provide high predictive power | The model does not assume any distributions on the independent variables |
 
 
 ## Model Building for Business Understanding
