@@ -741,8 +741,7 @@ Here are top words and the word cloud of words that are associated with Joy-Sadn
     <img width="800" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
 </p>
 
-<<<<<<< HEAD
-Below are the word clouds for all sentiment:
+ Wordclouds for all sentiments:
 
 <center>
   <table>
@@ -760,11 +759,11 @@ Below are the word clouds for all sentiment:
   <table>
 <tr>
     <td align = 'center'>Positive</td>
-    <td align = 'center'>Negetive</td>
+    <td align = 'center'>Negative</td>
     </tr>
     <tr>
       <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Positive.png" width="500"></td>
-      <td><img src="assets/Visualizations/sentiment_analysis/CLoud_Negative.png" width="500"></td>
+      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Negative.png" width="500"></td>
     </tr>
     </table>
 </center>
@@ -781,9 +780,6 @@ Below are the word clouds for all sentiment:
   </table>
 </center>
 
-=======
-Word clouds for sentiment pairs:
->>>>>>> fdc06026ff132f9dee2935eb1ecf6471032fedcf
 
 
 In addition to identifying the top words associated to a sentiment, we also looked at individual stories that have a high score for a particular sentiment to understand how the words align with what people actually say.
