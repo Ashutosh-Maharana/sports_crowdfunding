@@ -975,6 +975,11 @@ The salient topics are:
 ![topic-4](/assets/Visualizations/topic_modeling/final/topic_4.png)
 ![topic-4](/assets/Visualizations/topic_modeling/final/topic_8.png)
 
+## Correlating Sentiment Analysis and Topic Modelling Results
+
+The resulted topics and the top words associated with Joy, Positive and Trust sentiments show a great similarity. Words like success, champion from the Joy sentiment match with the terms/phrases from topics 5,6 about national competitions, investing in the future.
+Words like journey, money, forward from the positive sentiment match with terms/phrases from topics 2,8 about journey and hardwork and contributing to organization awareness.
+
 ## Sentiment Analysis Classification
 
 Copying the new labels to new CSV file
