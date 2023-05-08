@@ -783,6 +783,10 @@ Copying the new labels to new CSV file
 	#%%
 	df.to_csv('E:/PDS II/project-deliverable-2-bazinga/data/clean_data/final_dataset_textanalysis_sentiment_score_updated.csv', index=False)
 ```
+
+The above code adds three new columns ('joy_sad', 'pos_neg', and 'trust_fear') to a DataFrame. Each column's value is determined based on comparisons between specific columns in the DataFrame. The code then outputs the values of the 'joy_sad', 'pos_neg', and 'trust_fear' columns. Finally, it saves the updated DataFrame to a CSV file.
+
+
 Checking the Distribution of Joy and Sad 
 
 ```Python
@@ -865,6 +869,8 @@ Checking the Distribution of Trust and Fear
 
 **Handling Class Imbalance**
 
+From the above visulaizations we see that there is high class imbalance in the data, to handle the class imbalance we are using the SMOTE.
+
 SMOTE (Synthetic Minority Over-sampling Technique) is a technique used to handle class imbalance in machine learning. It creates synthetic samples of the minority class by selecting some of the minority class observations and creating new observations that are linear combinations of the original minority observations.
 
 By using SMOTE, synthetic samples were generated for the minority class ('fear','negative','sad'), resulting in a balanced dataset that can be used to train the sentiment analysis model.
@@ -909,11 +915,16 @@ from sklearn.metrics import plot_confusion_matrix
 plot_confusion_matrix(text_classifier, X_test, y_test)
 
 ```
+
+The code performs text classification using a Random Forest Classifier. It starts by extracting input features and labels from a DataFrame. Then, it defines stop words and vectorizes the input features using TF-IDF vectorization. To handle class imbalance, it applies SMOTE (Synthetic Minority Over-sampling Technique) to balance the dataset. The data is split into training and testing sets, and a Random Forest Classifier is trained on the training data. Predictions are made on the test data, and the performance of the model is evaluated using a confusion matrix, classification report, and accuracy score. 
+
 Joy and Sadness Confusion Matrix and Classification Report
 
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Joy_Sad.png">
 </p>
+
+The classification model achieved an overall accuracy of 99% in predicting emotions. It demonstrated high precision, recall, and F1-score for both the "joy" and "sadness" classes, indicating that the model successfully identified instances belonging to these classes. The confusion matrix shows that there were only a few misclassifications, with three instances each being incorrectly classified as "joy" and "sadness" respectively. Overall, the model performed exceptionally well in accurately predicting emotions.
 
 Postive and Negative Confusion Matrix and Classification Report
 
@@ -921,12 +932,16 @@ Postive and Negative Confusion Matrix and Classification Report
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Pos_Neg.png">
 </p>
 
+The classification model achieved an overall accuracy of 99% in predicting sentiment (negative or positive). It showed high precision, recall, and F1-score for both the "negative" and "positive" classes, indicating accurate identification of instances belonging to these classes. The confusion matrix reveals that there were only a few misclassifications, with five instances incorrectly classified as "negative" and one instance incorrectly classified as "positive." Overall, the model performed exceptionally well in accurately predicting sentiment, with minimal errors
+
 Trust and Fear Confusion Matrix and Classification Report
 
 <p align="center">
     <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Trust_Fear.png">
 </p>
 
+
+The classification model achieved a high accuracy of 99% in predicting emotions. It demonstrated excellent precision, recall, and F1-score for both the "fear" and "trust" classes, indicating accurate identification of instances belonging to these classes. The confusion matrix shows that there were only a few misclassifications, with three instances incorrectly classified as "fear" and none as "trust." Overall, the model performed exceptionally well in accurately predicting emotions, with minimal errors.
 
 ## Named Entity Recognition  
 Entities were extracted from the English language sports stories using the spaCy library. The stories were filtered for English language and named entity recognition was performed using “spaCy”. 
