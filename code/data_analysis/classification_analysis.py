@@ -12,12 +12,15 @@ from sklearn import metrics
 from sklearn.neural_network import MLPRegressor
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, roc_auc_score, confusion_matrix
 from sklearn import preprocessing
 
 #%%
 wd = os.getcwd()
 try:
-    wd = wd.replace("/code", "")
+    wd = wd.replace("/code/data_analysis", "")
 except: 
     pass
 os.chdir(wd)
@@ -56,8 +59,8 @@ X_train.drop('TeamOrAthlete', axis=1, inplace=True)
 X_test.drop('TeamOrAthlete', axis=1, inplace=True)
 
 #%%
-# Transformations check
-# Scaling - train, test combined or separate
+# Numerical data transformation
+# Scaling - train, test numerical data
 scaler = preprocessing.StandardScaler()
 scaler.fit(X_train)
 
@@ -69,26 +72,87 @@ X_test_std = scaler.transform(X_test)
 # AUC, accuracy, sensitivity, specificity -
 # Define lists for activation functions and hidden layers
 activation_funcs = ['relu', 'logistic', 'tanh']
-hidden_layers = [(50,50), (100,100), (50,100)]
 
+# Different hidden layer combinations
+# 1 hidden layer with 50 units and 100 units
+# 2 hidden layers with 50 units in each, 50 in one layer and 100 in another, 100 units in each
+# 3 hidden layers with 50 units in each, 50 in first, 100 in second, 50 in third, 100 units in each
+# 4 hidden layers with 50 units in each, 100 units in each
+hidden_layers = [(50, ), (100, ), (50, 50), (50, 100), (100, 100), (50, 50, 50), (50, 100, 50), (100, 100, 100), (50, 50, 50, 50), (50, 100, 100, 50), (100, 100, 100, 100)]
+
+
+model_list = [str(af+"-"+str(hl)) for af in activation_funcs for hl in hidden_layers]
+accuracy_models = []
+auc_score_models = []
+sensitivity_models = []
+specificity_models = []
+
+
+#%%
 # Train and test the neural network for different combinations of activation functions and hidden layers
 for af in activation_funcs:
     for hl in hidden_layers:
         # Train and predict using the neural network
-        nnclass = MLPClassifier(activation=af, solver='sgd', hidden_layer_sizes=hl)
+        nnclass = MLPClassifier(activation=af, solver='adam',hidden_layer_sizes=hl)
         nnclass.fit(X_train_std, Y_train)
-        nnclass_pred = nnclass.predict(X_test_std)
+        Y_pred = nnclass.predict(X_test_std)
+        Y_pred_prob = nnclass.predict_proba(X_test_std)[:, 1]
         
-        # Evaluate the performance of the neural network
-        cm = metrics.confusion_matrix(Y_test, nnclass_pred)
-        print(f"Activation Function: {af}, Hidden Layers: {hl}")
-        print("Confusion Matrix:")
-        print(cm)
-        plt.matshow(cm)
-        plt.title(f"Confusion Matrix: Activation Function: {af}, Hidden Layers: {hl}")        
-        plt.xlabel('Actual Value')
-        plt.ylabel('Predicted Value')
-        plt.show()
-        print(metrics.classification_report(Y_test, nnclass_pred))
+        # Compute the accuracy, AUC score, confusion matrix, sensitivity, and specificity of the model on the test set
+        accuracy = accuracy_score(Y_test, Y_pred)
+        auc_score = roc_auc_score(Y_test, Y_pred_prob)
+        tn, fp, fn, tp = confusion_matrix(Y_test, Y_pred).ravel()
+        sensitivity = tp / (tp + fn)
+        specificity = tn / (tn + fp)
+
+        # Appending the metric scores into respective lists
+        accuracy_models.append(accuracy)
+        auc_score_models.append(auc_score)
+        sensitivity_models.append(sensitivity)
+        specificity_models.append(specificity)
+
+        # Print the accuracy, AUC score, sensitivity, and specificity of the model on the test set
+        print("MLP Classifier with activation function: {} and hidden layer size: {}".format(af, hl))
+        print("Test set accuracy: %0.2f" % accuracy)
+        print("Test set AUC score: %0.2f" % auc_score)
+        print("Test set sensitivity: %0.2f" % sensitivity)
+        print("Test set specificity: %0.2f" % specificity)
+
+#%%
+# Plotting the AUC scores
+fig = plt.figure(figsize=(15,20))
+plt.plot(auc_score_models, model_list)
+plt.xlabel("AUC Score")
+plt.ylabel("Model activation function and hidden layer sizes")
+plt.title("Performance of various NN models on AUC Score")
+for i in range(len(auc_score_models)):
+    plt.text(auc_score_models[i], model_list[i], round(auc_score_models[i],3))
+plt.show()
+
+
+#%%
+# Plotting the accuracy scores
+fig = plt.figure(figsize=(15,20))
+plt.plot(accuracy_models, model_list)
+plt.xlabel("Accuracy")
+plt.ylabel("Model activation function and hidden layer sizes")
+plt.title("Performance of various NN models on Test Accuracy")
+for i in range(len(accuracy_models)):
+    plt.text(accuracy_models[i], model_list[i], round(accuracy_models[i],3))
+plt.show()
+
+#%%
+# Plotting the sensitivity scores
+fig = plt.figure(figsize=(15,20))
+plt.plot(sensitivity_models, model_list)
+plt.xlabel("Sensitivity")
+plt.ylabel("Model activation function and hidden layer sizes")
+plt.title("Performance of various NN models on Test Sensitivty")
+for i in range(len(accuracy_models)):
+    plt.text(sensitivity_models[i], model_list[i], round(sensitivity_models[i],3))
+plt.show()
 #%%
 # LSTM + GloVe vectors
+
+model_list
+# %%

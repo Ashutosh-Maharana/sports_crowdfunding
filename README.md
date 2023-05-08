@@ -623,7 +623,7 @@ We have 1143 observations of following variables.<br>
 
 The purpose of each variable and desciption is presented in the table below<br>
 | Attribute Name | Purpose |
-|:---|:---:|
+|:---|:---|
 | CampaignName | Name of campaign creator (can be athlete, team, or organization) |
 | SportName | Shows name of the sport, the campaign is created for |
 | ShortDescription | Description to be shown on the Home page campaign cards, Title for the campaign story |
@@ -1399,6 +1399,82 @@ auc(test_df$Success, predicted[,2])
 
 
 ## Classification using Neural Networks
+
+### Multilayer Perceptrons in Python
+
+Multilayer perceptrons leverage the power of fully connected artificial neurons that can learn paramaters for each of the inputs using backpropagation algorithms. This makes them very adept at learning non-linear relationships in the data and leveraging the learned parameters to perform well at classification or regression tasks. In our work, we leveraged the MLPClassifier in scikit-learn to implement our Neural Network models. 
+
+**Data Preparation**
+
+* Before fitting the neural network, the numerical variables needs to be scaled and categorical variables have to be converted into one-hot encoded values
+
+```Python
+# one-hot encode the TeamOrAthlete column in the train and test datasets
+X_train = pd.concat([X_train, pd.get_dummies(train_df['TeamOrAthlete'], prefix='TeamOrAthlete')], axis=1)
+X_test = pd.concat([X_test, pd.get_dummies(test_df['TeamOrAthlete'], prefix='TeamOrAthlete')], axis=1)
+
+# Drop the original TeamOrAthlete column from the train and test datasets
+X_train.drop('TeamOrAthlete', axis=1, inplace=True)
+X_test.drop('TeamOrAthlete', axis=1, inplace=True)
+
+#%%
+# Transformations check
+# Scaling - train, test combined or separate
+scaler = preprocessing.StandardScaler()
+scaler.fit(X_train)
+
+# Perform the standardization process
+X_train_std = scaler.transform(X_train)
+X_test_std = scaler.transform(X_test)
+```
+
+**Hyperparameter Choices**
+We chose multiple hyperparameter choices on activation function and hidden layer sizes to identify the best performing model
+```Python
+# Define lists for activation functions and hidden layers
+activation_funcs = ['relu', 'logistic', 'tanh']
+
+# Different hidden layer combinations
+# 1 hidden layer with 50 units and 100 units
+# 2 hidden layers with 50 units in each, 50 in one layer and 100 in another, 100 units in each
+# 3 hidden layers with 50 units in each, 50 in first, 100 in second, 50 in third, 100 units in each
+# 4 hidden layers with 50 units in each, 100 units in each
+hidden_layers = [(50, ), (100, ), (50, 50), (50, 100), (100, 100), (50, 50, 50), (50, 100, 50), (100, 100, 100), (50, 50, 50, 50), (50, 100, 100, 50), (100, 100, 100, 100)]
+
+```
+
+**Model Training and Evaluation**
+
+We fit the data on the scaled data and then evaluate the model on the test data using accuracy, AUC, sensitivity and specificity as the primary metrics of interest.
+
+```Python
+# Train and test the neural network for different combinations of activation functions and hidden layers
+for af in activation_funcs:
+    for hl in hidden_layers:
+        # Train and predict using the neural network
+        nnclass = MLPClassifier(activation=af, solver='adam',hidden_layer_sizes=hl)
+        nnclass.fit(X_train_std, Y_train)
+        Y_pred = nnclass.predict(X_test_std)
+        Y_pred_prob = nnclass.predict_proba(X_test_std)[:, 1]
+        
+        # Compute the accuracy, AUC score, confusion matrix, sensitivity, and specificity of the model on the test set
+        accuracy = accuracy_score(Y_test, Y_pred)
+        auc_score = roc_auc_score(Y_test, Y_pred_prob)
+        tn, fp, fn, tp = confusion_matrix(Y_test, Y_pred).ravel()
+        sensitivity = tp / (tp + fn)
+        specificity = tn / (tn + fp)
+
+        # Appending the metric scores into respective lists
+        accuracy_models.append(accuracy)
+        auc_score_models.append(auc_score)
+        sensitivity_models.append(sensitivity)
+        specificity_models.append(specificity)
+```
+
+**Performance Evaluation**
+
+
+
 
 ## Conclusion and Discussion
 
