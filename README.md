@@ -949,12 +949,31 @@ lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
                                         passes=5,
                                         alpha='auto',
                                         per_word_topics=True)
+
+# Enabling an interactive topic model visualizer
+pyLDAvis.enable_notebook()
+vis = pyLDAvis.gensim.prepare(lda_model, corpus, dictionary)
+vis
 ```
 
+* The most common words in the entire document are shown below: organization, push, help_spread, journey, success ...
+![commonwords-1](/assets/Visualizations/topic_modeling/final/most_common_words.png)
+
+
 * The final topics are as below:
+
 <p align="center">
     <img width="700" height="300" src="/assets/Visualizations/topic_modeling/final/topics_keywords.png">
 </p>
+
+The salient topics are:
+<ul>
+    <li> Topic 4 has the theme of players and clubs, it talks about players, clubs, tournaments ..
+    <li> Topic 8 has the theme of journey and hardwork, it talks about how the donations will enable the athletes or teams to push and make the journey
+</ul>
+
+![topic-4](/assets/Visualizations/topic_modeling/final/topic_4.png)
+![topic-4](/assets/Visualizations/topic_modeling/final/topic_8.png)
 
 ## Sentiment Analysis Classification
 
