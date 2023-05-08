@@ -83,11 +83,11 @@ Codes
 * [factor_analys.R](/code/deliverable_1_analysis/factor_analysis.R) is the R file used for data reduction - factor analysis of narcissism word counts
 * [text_analysis.R](/code/text_analysis/text_analysis.R)is the R file used for sentiment analysis - creates new datasets with sentiment-specific word counts. 
 * [sentiment_analysis.R](/code/text_analysis/sentiment_analysis.R)is the R file used for sentiment classification
-* [topic_modeling.py](/code/text_analysis/topic_modeling.py)is the Python file used for topic modelling - built LDA model to identify topics and generated visualizations for topics
-* [named_entity_recognition.py](/code/text_analysis/named_entity_recognition.py)is the R file used for named entity recognition where entities were extracted for every story
-* [data_sampling.R](/code/data_analysis/data_sampling.R)is the R file used for performing Stratified sampling and generate train, test datasets
-* [classification_analysis.py](/code/data_analysis/classification_analysis.py)is the Python file used to build neural network models for different combinations of activation functions and hidden layers
-* [parameter_estimation.R](/code/data_analysis/parameter_estimation.R)is the R file used to build and assess the assumptions of logistic regression, decision tree models
+* [topic_modeling.py](/code/text_analysis/topic_modeling.py) is the Python file used for topic modelling - built LDA model to identify topics and generated visualizations for topics
+* [named_entity_recognition.py](/code/text_analysis/named_entity_recognition.py) is the R file used for named entity recognition where entities were extracted for every story
+* [data_sampling.R](/code/data_analysis/data_sampling.R) is the R file used for performing Stratified sampling and generate train, test datasets
+* [classification_analysis.py](/code/data_analysis/classification_analysis.py) is the Python file used to build neural network models for different combinations of activation functions and hidden layers
+* [parameter_estimation.R](/code/data_analysis/parameter_estimation.R) is the R file used to build and assess the assumptions of logistic regression, decision tree models
 
 ---
 Data tables and Data dictionary
