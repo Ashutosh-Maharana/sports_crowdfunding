@@ -953,7 +953,7 @@ lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
 
 * The final topics are as below:
 <p align="center">
-    <img width="700" height="400" src="/assets/Visualizations/topic_modeling/final/topics_keywords.png">
+    <img width="700" height="300" src="/assets/Visualizations/topic_modeling/final/topics_keywords.png">
 </p>
 
 ## Sentiment Analysis Classification
