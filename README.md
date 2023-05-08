@@ -869,7 +869,7 @@ Checking the Distribution of Trust and Fear
 
 **Handling Class Imbalance**
 
-From the above visulaizations we see that there is high class imbalance in the data, to handle the class imbalance we are using the SMOTE.
+Based on the visualizations shown above, it is evident that there is a significant imbalance between the different classes in the data. In order to address this imbalance, we are employing a technique called SMOTE (Synthetic Minority Over-sampling Technique).
 
 SMOTE (Synthetic Minority Over-sampling Technique) is a technique used to handle class imbalance in machine learning. It creates synthetic samples of the minority class by selecting some of the minority class observations and creating new observations that are linear combinations of the original minority observations.
 
