@@ -349,7 +349,7 @@ df.to_csv("c:\\Users\\Satishwar Kedas\\OneDrive - Oklahoma A and M System\\Docum
 * The data we have before the cleaning was : "â‚¬9,301", "Â£2,747.25", "Â¥0","â‚½0","$5"
 
 <p align="center">
-    <img width="300" src="assets/Raw_data/Differentiating_the_currency.png">
+    <img width="200" src="assets/Raw_data/Differentiating_the_currency.png">
 </p>
 
 * The data we have after cleaning : City- "Euro", "Pound", "Yen", "Russian Rubel", "USD"
@@ -440,7 +440,7 @@ for dimension in ['authority', 'superiority', 'exhibitionism', 'vanity', 'selfsu
     return moneyraised_clean
 ```
 <p align="center">
-    <img width="300" src="assets/Raw_data/Removing_the_redundant_text_from_Money_Raised.png">
+    <img width="200" src="assets/Raw_data/Removing_the_redundant_text_from_Money_Raised.png">
 </p>
 
 7. Removing the redundant text from "Per Fund Raised"
@@ -455,7 +455,7 @@ for dimension in ['authority', 'superiority', 'exhibitionism', 'vanity', 'selfsu
     return funded_clean
 ```
 <p align="center">
-    <img width="300" src="assets/Raw_data/Removing_the_redundant_text_from_Per_Fund_Raised.png">
+    <img width="200" src="assets/Raw_data/Removing_the_redundant_text_from_Per_Fund_Raised.png">
 </p>
 
 8. Removing the redundant text from "number of supporters"
@@ -470,7 +470,7 @@ for dimension in ['authority', 'superiority', 'exhibitionism', 'vanity', 'selfsu
     return supporter_clean
 ```
 <p align="center">
-    <img width="300" src="assets/Raw_data/Removing_the_redundant_text_from_number_of_supporters.png">
+    <img width="200" src="assets/Raw_data/Removing_the_redundant_text_from_number_of_supporters.png">
 </p>
 
 9. After the Data Reduction, a new variable NarcissismFactor was created based on the factor analysis output
