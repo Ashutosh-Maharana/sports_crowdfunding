@@ -738,7 +738,7 @@ After we arrived at our dataset consisting of words tagged to each sentiment, we
 Here are top words and the word cloud of words that are associated with Joy-Sadness, Positive-Negative, Trust-Fear sentiment pairs:
 
 <p align="center">
-    <img width="800" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
+    <img width="600" src="/assets/Visualizations/sentiment_analysis/TopWords.png">
 </p>
 
  Wordclouds for all sentiments:
@@ -750,8 +750,8 @@ Here are top words and the word cloud of words that are associated with Joy-Sadn
     <td align = 'center'>Sadness</td>
     </tr>
     <tr>
-      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Joy.png" width="500"></td>
-      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Sadness.png" width="500"></td>
+      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Joy.png" width="300"></td>
+      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Sadness.png" width="300"></td>
     </tr>
     </table>
 </center>
@@ -762,8 +762,8 @@ Here are top words and the word cloud of words that are associated with Joy-Sadn
     <td align = 'center'>Negative</td>
     </tr>
     <tr>
-      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Positive.png" width="500"></td>
-      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Negative.png" width="500"></td>
+      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Positive.png" width="300"></td>
+      <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Negative.png" width="300"></td>
     </tr>
     </table>
 </center>
@@ -774,8 +774,8 @@ Here are top words and the word cloud of words that are associated with Joy-Sadn
     <td align = 'center'>Fear</td>
     </tr>
     <tr>
-    <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Trust.png" width="500"></td>
-    <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Fear.png" width="500"></td>
+    <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Trust.png" width="300"></td>
+    <td><img src="assets/Visualizations/sentiment_analysis/Cloud_Fear.png" width="300"></td>
     </tr>
   </table>
 </center>
