@@ -861,6 +861,73 @@ Checking the Distribution of Trust and Fear
 
 
 
+
+
+**Handling Class Imbalance**
+
+SMOTE (Synthetic Minority Over-sampling Technique) is a technique used to handle class imbalance in machine learning. It creates synthetic samples of the minority class by selecting some of the minority class observations and creating new observations that are linear combinations of the original minority observations.
+
+By using SMOTE, synthetic samples were generated for the minority class ('fear','negative','sad'), resulting in a balanced dataset that can be used to train the sentiment analysis model.
+
+**Classification Model**
+
+```Python
+# Extract the input features and labels
+features = data['StoryCleaned']
+labels = data['joy_sad']
+#%%
+# Define the stop words
+stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'which', 'this', 'that', 'these', 'those', 'then', 'just', 'so', 'than', 'such', 'both', 'through', 'about', 'for', 'is', 'of', 'while', 'during', 'to', 'What', 'Which', 'Is', 'If', 'While', 'This']
+# Vectorize the input features
+vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
+processed_features = vectorizer.fit_transform(features).toarray()
+#%%
+# Handle class imbalance using SMOTE
+smote = SMOTE(random_state=0)
+processed_features, labels = smote.fit_resample(processed_features, labels)
+#%%
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
+#%%
+# Train a Random Forest Classifier on the training data
+text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
+text_classifier.fit(X_train, y_train)
+#%%
+# Make predictions on the test data
+predictions = text_classifier.predict(X_test)
+#%%
+# Evaluate the performance of the model using a confusion matrix
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+
+# %%
+print(classification_report(y_test,predictions))
+# %%
+print(accuracy_score(y_test, predictions))
+# %%
+from sklearn.metrics import plot_confusion_matrix
+plot_confusion_matrix(text_classifier, X_test, y_test)
+
+```
+Joy and Sadness Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Joy_Sad.png">
+</p>
+
+Postive and Negative Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Pos_Neg.png">
+</p>
+
+Trust and Fear Confusion Matrix and Classification Report
+
+<p align="center">
+    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Trust_Fear.png">
+</p>
+
+
 ## Named Entity Recognition  
 Entities were extracted from the English language sports stories using the spaCy library. The stories were filtered for English language and named entity recognition was performed using “spaCy”. 
 <p align="center">
@@ -1013,71 +1080,6 @@ Europe, Africa, North America, Thunder Bay and Asia were the top locations that 
 
 
 
-
-
-**Handling Class Imbalance**
-
-SMOTE (Synthetic Minority Over-sampling Technique) is a technique used to handle class imbalance in machine learning. It creates synthetic samples of the minority class by selecting some of the minority class observations and creating new observations that are linear combinations of the original minority observations.
-
-By using SMOTE, synthetic samples were generated for the minority class ('fear','negative','sad'), resulting in a balanced dataset that can be used to train the sentiment analysis model.
-
-**Classification Model**
-
-```Python
-# Extract the input features and labels
-features = data['StoryCleaned']
-labels = data['joy_sad']
-#%%
-# Define the stop words
-stop = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'what', 'which', 'this', 'that', 'these', 'those', 'then', 'just', 'so', 'than', 'such', 'both', 'through', 'about', 'for', 'is', 'of', 'while', 'during', 'to', 'What', 'Which', 'Is', 'If', 'While', 'This']
-# Vectorize the input features
-vectorizer = TfidfVectorizer(max_features=2500, min_df=7, max_df=0.8, stop_words=stop)
-processed_features = vectorizer.fit_transform(features).toarray()
-#%%
-# Handle class imbalance using SMOTE
-smote = SMOTE(random_state=0)
-processed_features, labels = smote.fit_resample(processed_features, labels)
-#%%
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.3, random_state=0)
-#%%
-# Train a Random Forest Classifier on the training data
-text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
-text_classifier.fit(X_train, y_train)
-#%%
-# Make predictions on the test data
-predictions = text_classifier.predict(X_test)
-#%%
-# Evaluate the performance of the model using a confusion matrix
-cm = confusion_matrix(y_test, predictions)
-print(cm)
-
-# %%
-print(classification_report(y_test,predictions))
-# %%
-print(accuracy_score(y_test, predictions))
-# %%
-from sklearn.metrics import plot_confusion_matrix
-plot_confusion_matrix(text_classifier, X_test, y_test)
-
-```
-Joy and Sadness Confusion Matrix and Classification Report
-
-<p align="center">
-    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Joy_Sad.png">
-</p>
-
-Postive and Negative Confusion Matrix and Classification Report
-
-<p align="center">
-    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Pos_Neg.png">
-</p>
-
-Trust and Fear Confusion Matrix and Classification Report
-
-<p align="center">
-    <img width="500" src="/assets/Visualizations/sentiment_analysis/Sentiment_Classification_Trust_Fear.png">
-</p>
 
 
 ## Data Splitting and Sub-Sampling 
