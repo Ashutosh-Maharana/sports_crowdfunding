@@ -41,22 +41,6 @@ A) Project Objectives
 
 Unit of Analysis: In our analysis, we have looked at two primary units of analysis - the crowdfunding campaign and associated with it  - the crowdfunding outcome, captured by a binary variable __Success__ (Success = 1, Failure = 0) and the extent to which the crowdfunding campaing succeeded or failed, be captured by a continuous variable __Funds Received Pct__ (% of funding goal achieved). For ex., a successful crowdfunding campaign might have received $ 4000 for a funding goal of $ 2000, this indicates that for that crowdfunding campaign __Success__ = 1 and __Funds Received Pct__ = 4000/2000 * 100 = 200%
 
-## Project Schedule
-
-Since the project is a part of the 'Programming for data science and analytics 1' course and is scheduled within course timeline, the duration and deadlines were known beforehand. This helped us in generating and following a smooth process flow in order to conduct the research in effective manner<br>
-Team members with area of primary involvement:<br>
-1) Ashutosh Maharana - Data cleaning and consolidation, Data visualization<br>
-2) Rishitha Koneru - Data Transformation, Data Analysis
-3) Satishwar Kedas - Project idea and proposal, Data scraping and transformation, Data Reduction<br>
-4) Tharun Ponnaganti - Data cleaning and consolidation, Data Analysis<br>
-5) Yash Patel - Data scraping and report preperation<br>
-
-The image provided below shows the schedule of the project
-![Schedule.png](/assets/gantt_chart.png)
-
-In early days of the project, we focused on discussing different project ideas and after finalizing one idea we submitted project proposal. After that, the website https://sportfunder.com was analysed and plan for scraping was formatted. Team members Satishwar Kedas and Yash Patel worked together on finalizing scraping plan and co-ordinated with each other to scrap data from home page and individual campaign pages. Team members Ashutosh Maharana and Tharun Ponnaganti worked on Data Cleaning and consolidation and generated final data table for further analysis. After the initial project submission with final data set, we worked on data visualization and data analysis<br>
-
-
 ## Data Preparation
 ##### Summary
 
